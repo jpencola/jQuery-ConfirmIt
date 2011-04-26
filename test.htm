@@ -3,8 +3,74 @@
 <title>JWarning Test</title>
 </head>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js" type="text/javascript"></script>
+<script src="jWarning.js" type="text/javascript"></script>
+
+<script  type="text/javascript">
+
+$(document).ready(function(){
+	console.log("v 1.2");
+	
+	// API will be $(".confirm").QuickConfirm("default warning")
+	//title attribute will override the default
+	initConfirm();
+	
+	// let's leave this feature out 1st goround
+	//initExternalLinkWarning();
+	
+	
+	
+	
+	 $("input,select,:checkbox,:input,textarea,:text").change(function (e) {
+	 trace("change detected");
+		window.onbeforeunload = LeaveWarning;
+	});
+	
+	$('form input[type=text], form textarea').each(function (i) {
+          $(this).data('initial_value', $(this).val());
+     });
+
+     $('form input[type=text], form textarea').keyup(function() {
+          if ($(this).val() != $(this).data('initial_value')) {
+	 trace("text change detected");
+		window.onbeforeunload = LeaveWarning;
+          }
+     });
+	
+});
+
+</script>
+
 <body>
 
-hi
+<a href="http://www.google.com" >an external link</a>
 
+<br/>
+<br/>
+<a href="#" class="confirm" title="don't push my button">a link button</a>
+
+<form action="test.htm" method="post">
+
+<input type="text" value="" name="firstname" />
+<br /><br />
+<input type="checkbox" name="iscool" value="true" />
+<br /><br />
+
+Plugin Name:  
+<select>
+  <option value="volvo">SimpleConfirm</option>
+  <option value="audi">QuickConfirm</option>
+  <option value="audi">CoolConfirm</option>
+  <option value="saab">ConfirmIt</option>
+  <option value="mercedes">ConfirmThis</option>
+</select>
+<br /><br />
+
+
+<input type="submit" value="PUSH ME" class="confirm" title="don't push my button" />
+
+
+<br /><br />
+<button class="confirm" title="don't push my button">PUSH ME</button>
+</form>
 </body>
