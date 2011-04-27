@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>jQuery ConfirmIt Demo: Link</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery-ConfirmIt: Link Example</title>
+		<style type="text/css">
+			a {display:block;margin:14px;}
+		</style>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js" type="text/javascript"></script>
+		<script src="../src/jquery.confirm.it.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			
+			//	Called when the DOM is ready
+			$(function() {
+				//	bind some future event handlers
+				$('a').click(function(){
+					trace('original event');
+					return false;	
+				});
+						
+				//	instantiate the ConfirmIt plugin.
+				//	In this example I'm passing it the optional "selector" specifier,
+				//	which will attach the confirm behavior to all elements that match that selector.		
+				$().confirmIt({
+					selector: "a.confirmit"
+				});
+			});
+		</script>
 	</head>
 	<body>
-		
+		<h1>Link Examples</h1>
+		<a href="http://www.duckduckgo.com" title="A confirmable link" class="confirmit {message: 'Are you sure you wish to delete?'}">Double Checking Link</a>
+		<a href="#foo" title="A non-confirm link" class="default">Non-Confirm Link</a>
+		<a href="#" title="A confirmable link" class="confirmit {message: 'The document has not been saved, exit anyway?'}">Another Confirmation Link</a>
+		<div class="confirmit">Non-confirm div</div>
 	</body>
 </html>
