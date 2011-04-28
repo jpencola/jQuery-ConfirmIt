@@ -15,24 +15,28 @@
 		$(this).each(function() {
 			var element = $(this);
 			if (element.data("events")){
-				rememberEventHandler(element);
+				rememberEventHandlers(element);
 				element.unbind();
-				element.one(settings.triggered_by, onConfirm);
+				var classname = element.attr('class');
+				var confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]; // good candidate for a regexp
+				element.bind(settings.triggered_by, (function(){showConfirm(element, confirm_message)}));
 			} else {
 				return;
 			}
 		});
 		
 		//	the handler that intercepts the action
-		function onConfirm(){
-			var classname = $(this).attr('class');
-			var message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]; // good candidate for a regexp
-			trace("confirm: "+message);
-			return false;
+		function showConfirm(target_element, message){
+			var confirmed = window.confirm(message);
+			if (confirmed){
+				
+			} else {
+				return false;
+			}
 		};
 		
 		//	stashes existing bound events on the element
-		function rememberEventHandler(element){
+		function rememberEventHandlers(element){
 			element.data('__deferred_event_handlers__', element.data("events"));
 		};
 	};
