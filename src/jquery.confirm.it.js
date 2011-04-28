@@ -1,11 +1,10 @@
 (function($){
-	$.fn.confirmIt = function(method, options){
+	$.fn.confirmIt = function(options){
 		//	default settings
 		var settings = {
-			selector: ".confirmit",
-			triggered_by: {'name': 'click'}
+			triggered_by: 'click'
 		};
-		
+
 		//	apply any options overrides
 		$.extend(settings, options);
 		
@@ -13,12 +12,12 @@
 		//	remember any event handlers bound to it
 		//	then remove any event handlers from the element	
 		//	if the element has no event handlers then do nothing
-		$(settings.selector).each(function() {
+		$(this).each(function() {
 			var element = $(this);
 			if (element.data("events")){
 				rememberEventHandler(element);
 				element.unbind();
-				element.one(settings.triggered_by.name, onConfirm);
+				element.one(settings.triggered_by, onConfirm);
 			} else {
 				return;
 			}

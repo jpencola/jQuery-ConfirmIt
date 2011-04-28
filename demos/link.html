@@ -23,17 +23,17 @@
 				//	instantiate the ConfirmIt plugin.
 				//	In this example I'm passing it the optional "selector" specifier,
 				//	which will attach the confirm behavior to all elements that match that selector.		
-				$().confirmIt({
-					selector: "a.confirmit"
+				$("a.confirmit").confirmIt({
+					triggered_by: 'click'
 				});
 			});
 		</script>
 	</head>
 	<body>
 		<h1>Link Examples</h1>
-		<a href="http://www.duckduckgo.com" title="A confirmable link" class="confirmit {message: 'Are you sure you wish to delete?'}">Double Checking Link</a>
-		<a href="#foo" title="A non-confirm link" class="default">Non-Confirm Link</a>
+		<a href="http://www.duckduckgo.com" title="A confirmable link" class="confirmit {message: 'Are you sure you wish to leave?'}">Double Checking Link</a>
+		<!--a href="#foo" title="A non-confirm link" class="default">Non-Confirm Link</a>
 		<a href="#" title="A confirmable link" class="confirmit {message: 'The document has not been saved, exit anyway?'}">Another Confirmation Link</a>
-		<div class="confirmit">Non-confirm div</div>
+		<div class="confirmit">Non-confirm div</div-->
 	</body>
 </html>
