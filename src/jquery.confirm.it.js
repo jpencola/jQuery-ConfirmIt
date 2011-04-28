@@ -13,9 +13,18 @@
 		//	then remove any event handlers from the element	
 		//	if the element has no event handlers then do nothing
 		$(this).each(function() {
-			var target = this;
+			var element_event_matches_trigger;
 			var element = $(this);
-			if (element.data("events")){
+			var events_data = element.data("events");
+			for (var key in events_data){
+				if (events_data[key].length > 0){
+					if (events_data[key][0].type == settings.triggered_by){
+						element_event_matches_trigger = true;
+						break;
+					}
+				}
+			}
+			if (element_event_matches_trigger){
 				rememberEventHandler(element);
 				removeEventHandler(element);
 				bindConfirmHandler(element);
