@@ -4,7 +4,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>jQuery-ConfirmIt: Example Showcase</title>
 		<style type="text/css">
-			button {display: block; margin: 15px;}
+			body {margin:35px;}
+			section {margin:25px 0; border-bottom: solid 1px #c1c1c1;}
+			button {display: block;}
+			button.add {background-color: #9EF398;}
 			button.delete {background-color: #F37C9E;}
 			button.undo {background-color: #B878F3;}
 		</style>
@@ -16,10 +19,12 @@
 			
 			//	Called when the DOM is ready
 			$(function() {
-				//	bind some future event handlers
-				$('button.confirmit').mouseup(function(){
-					trace('original event');
-					return false;	
+				$('button#add').mouseup(function(){
+					var current_sum = $('#sum-input').attr('value');
+					$('#sum-input').attr('value', +current_sum+10);
+				});
+				$('button#undo').mouseup(function(){
+					trace('just undid something');
 				});
 						
 				//	instantiate the ConfirmIt plugin.
@@ -33,7 +38,12 @@
 	</head>
 	<body>
 		<h1>Examples</h1>
-		<button title="Delete Things" class="delete confirmit {message: 'Are you sure you want to delete this?'}">Delete</button>
-		<button title="Undo Things" class="undo confirmit {message: 'Are you sure you want to undo your changes?'}">Undo</button>
+		<section>
+			<button id="add" title="Add Things" class="add confirmit {message: 'Are you sure you want to add 10 more to this?'}">Add</button>
+			<input id="sum-input" value="0" readonly="true"></input>
+		</section>
+		<section>
+		<button id="undo" title="Undo Things" class="undo {message: 'Are you sure you want to undo your changes?'}">Undo</button>
+		</section>
 	</body>
 </html>
