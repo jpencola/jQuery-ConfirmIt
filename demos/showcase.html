@@ -4,8 +4,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>jQuery-ConfirmIt: Example Showcase</title>
 		<style type="text/css">
+			/* Wrap rules that are > 3 properties long */ 
 			body {margin:35px;}
-			section {margin:25px 0; border-bottom: solid 1px #c1c1c1;}
+			div.section {
+				margin:25px 0; 
+				border-bottom: solid 1px #c1c1c1;
+				background-color: #ECF8F8;
+				padding: 15px;
+			}
 			button {display: block; cursor: pointer;}
 			button.add {background-color: #9EF398;}
 			button.delete {background-color: #F37C9E;}
@@ -37,12 +43,12 @@
 	</head>
 	<body>
 		<h1>ConfirmIt Examples</h1>
-		<section>
+		<div class="section">
 			<button id="add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Add</button>
 			<input id="sum-input" value="0" readonly="true"></input>
-		</section>
-		<section>
+		</div>
+		<div class="section">
 		<button id="undo" title="Undo Things" class="undo confirmit {message: Are you sure you want to undo your changes?}">Undo</button>
-		</section>
+		</div>
 	</body>
 </html>
