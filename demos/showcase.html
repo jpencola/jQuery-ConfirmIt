@@ -24,22 +24,6 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				//	ConfirmIt instances
-				//	------------------------------------------------
-				//	In this example I'm passing it the optional "triggered_by" specifier,
-				//	which tells the confirm prompt to intercept that event on the elements matched by the selector.	
-				//	I'm also passing the optional "message" specifier,
-				//	which tells the confirm prompt what the default confirmation message should be if the plugin can't find one.	
-				$("button.confirmit").confirmIt({
-					triggered_by: 'mouseup',
-					message: "No, wait!"
-				});
-				
-				$("#addition-answer").confirmIt({
-					triggered_by: 'blur'
-				});
-				
-				
 				//	Showcase Demos
 				//	------------------------------------------------
 				$('#add').mouseup(function(){
@@ -56,6 +40,21 @@
 				});
 				$('#undo').mouseup(function(){
 					alert('Your changes have been un-done.');
+				});
+				
+				//	ConfirmIt instances
+				//	------------------------------------------------
+				//	In this example I'm passing it the optional "triggered_by" specifier,
+				//	which tells the confirm prompt to intercept that event on the elements matched by the selector.	
+				//	I'm also passing the optional "message" specifier,
+				//	which tells the confirm prompt what the default confirmation message should be if the plugin can't find one.	
+				$("button.confirmit").confirmIt({
+					triggered_by: 'mouseup',
+					message: "No, wait!"
+				});
+				
+				$("#addition-answer").confirmIt({
+					triggered_by: 'blur'
 				});
 			});
 		</script>
