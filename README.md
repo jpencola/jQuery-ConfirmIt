@@ -1,1 +1,3 @@
-This is ConfirmIt, a simple jQuery plugin!
+# This is *ConfirmIt*, a simple jQuery plugin! #
+-------
+

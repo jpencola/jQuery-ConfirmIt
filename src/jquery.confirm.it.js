@@ -2,7 +2,8 @@
 	$.fn.confirmIt = function(options){
 		//	default settings
 		var settings = {
-			triggered_by: 'click'
+			triggered_by: "click",
+			message: "Are you sure?"
 		};
 
 		//	apply any options overrides
@@ -19,17 +20,12 @@
 			for (var key in events_data){
 				if (events_data[key].length > 0){
 					if (events_data[key][0].type == settings.triggered_by){
-						element_event_matches_trigger = true;
+						rememberEventHandler(element);
+						removeEventHandler(element);
+						bindConfirmHandler(element);
 						break;
 					}
 				}
-			}
-			if (element_event_matches_trigger){
-				rememberEventHandler(element);
-				removeEventHandler(element);
-				bindConfirmHandler(element);
-			} else {
-				return;
 			}
 		});
 		
@@ -50,7 +46,7 @@
 			element.data('__deferred_event_handlers__', event_memory);
 		};
 		
-		//	un-binds trigger event from the element
+		//	un-binds a trigger event from the element
 		function removeEventHandler(element){
 			element.unbind(settings.triggered_by);
 		};
@@ -68,12 +64,22 @@
 				bindConfirmHandler(element);
 			}
 		};
+
+		//	Extracts the confirmation message from the element 
+		//	HTML5 data attribute is prefferred...
+		//	then the class attribute...
+		//	finally, fall back on the default message in settings
+		function getConfirmMessage(element){
+			var confirm_message, classname = element.attr('class');
+			confirm_message = element.attr('data-confirmit-message');
+			if (!confirm_message) confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]; // good candidate for a regexp
+			if (!confirm_message) confirm_message = settings.message;
+			return confirm_message;
+		};
 		
-		//	initializes the confirm handler to the specified trigger events
+		//	binds the confirm handler to the specified trigger event
 		function bindConfirmHandler(element){
-			var classname = element.attr('class');
-			var confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]; // good candidate for a regexp
-			element.bind(settings.triggered_by, (function(){showConfirm(element, confirm_message)}));
+			element.bind(settings.triggered_by, (function(){showConfirm(element, getConfirmMessage(element))}));
 		};
 		
 		//	the handler that intercepts the action
