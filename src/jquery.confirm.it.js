@@ -9,6 +9,9 @@
 		//	apply any options overrides
 		$.extend(settings, options);
 		
+		//	listen for future elements added to the DOM 
+		$('body').bind('DOMNodeInserted', function(event){initConfirm($(event.target))});
+		
 		//	for each matching element that needs a confirmation step...
 		//	iterate over all events that it has currently bound
 		//	find the events that match the triggered_by name
@@ -17,8 +20,12 @@
 		//	bind the confirm event so it is the first one in the bubbling phase
 		//	re-bind all the other events
 		$(this).each(function() {
-			var element_event_matches_trigger;
 			var element = $(this);
+			initConfirm(element);
+		});
+		
+		//	re-orders the event handlers for the element that needs a confirmation
+		function initConfirm(element){
 			var events_data = element.data("events");
 			for (var key in events_data){
 				var event_memory = [];
@@ -31,7 +38,7 @@
 					}
 				}
 			}
-		});
+		};
 		
 		//	stashes existing trigger events for re-use later
 		function rememberEventHandlers(element, event_memory){
