@@ -16,6 +16,7 @@
 			button.add {background-color: #9EF398;}
 			button.delete {background-color: #F37C9E;}
 			button.undo {background-color: #B878F3;}
+			button.awesome {background-color: #B878F3;}
 			input.correct {background-color: #9EF398;}
 			input.incorrect {background-color: #F37C9E;}
 		</style>
@@ -24,12 +25,18 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				//	Showcase Demos
-				//	------------------------------------------------
+				/*	Addition Button: 
+				--	See how custom logic fires when confirmed
+				--	See how the class attribute is used to set a custom confirm message
+				*/
 				$('#add').mouseup(function(){
 					var current_sum = $('#sum-input').attr('value');
 					$('#sum-input').attr('value', +current_sum+10);
 				});
+				
+				/*	Answer Input: 
+				--	See how custom logic fires when confirmed
+				*/
 				$('#addition-answer').blur(function(){
 					var correct_answer = (this.value == 5);
 					if (correct_answer){
@@ -38,16 +45,35 @@
 						this.className = 'incorrect';
 					}
 				});
+				
+				/*	Undo button: 
+				--	Basic confirm example
+				*/
 				$('#undo').mouseup(function(){
 					alert('Your changes have been un-done.');
 				});
 				
-				//	ConfirmIt instances
-				//	------------------------------------------------
-				//	In this example I'm passing it the optional "triggered_by" specifier,
-				//	which tells the confirm prompt to intercept that event on the elements matched by the selector.	
-				//	I'm also passing the optional "message" specifier,
-				//	which tells the confirm prompt what the default confirmation message should be if the plugin can't find one.	
+				/*	Awesome button: 
+				--	See how multiple events bindings of the same type can still be used
+				--	and the ConfirmIt event will keep their sequence intact
+				*/
+				$('#awesome').mouseup(function(e){
+					alert('Your awesome fired 1.');
+				});
+				$('#awesome').mouseup(function(){
+					alert('Your awesome fired 2.');
+				});
+				$('#awesome').mouseup(function(){
+					alert('Your awesome fired 3.');
+				});
+				
+				/*	ConfirmIt instances
+					------------------------------------------------
+				--	In this example I'm passing it the optional "triggered_by" specifier,
+				--	which tells the confirm prompt to intercept that event on the elements matched by the selector.	
+				--	I'm also passing the optional "message" specifier,
+				--	which tells the confirm prompt what the default confirmation message should be if the plugin can't find one.	
+				*/
 				$("button.confirmit").confirmIt({
 					triggered_by: 'mouseup',
 					message: "No, wait!"
@@ -70,6 +96,9 @@
 		</div>
 		<div class="section">
 			<button id="undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
+		</div>
+		<div class="section">
+			<button id="awesome" title="Sequence Awesomeness" class="confirmit" data-confirmit-message="Are you awesome?">Awesome</button>
 		</div>
 	</body>
 </html>

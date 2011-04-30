@@ -9,59 +9,59 @@
 		//	apply any options overrides
 		$.extend(settings, options);
 		
-		//	for each matching confirm element...
-		//	remember any event handlers bound to it
-		//	then remove any event handlers from the element	
-		//	if the element has no event handlers then do nothing
+		//	for each matching element that needs a confirmation step...
+		//	iterate over all events that it has currently bound
+		//	find the events that match the triggered_by name
+		//	store them for retrieval later
+		//	un-bind all of them
+		//	bind the confirm event so it is the first one in the bubbling phase
+		//	re-bind all the other events
 		$(this).each(function() {
 			var element_event_matches_trigger;
 			var element = $(this);
 			var events_data = element.data("events");
 			for (var key in events_data){
-				if (events_data[key].length > 0){
-					if (events_data[key][0].type == settings.triggered_by){
-						rememberEventHandler(element);
-						removeEventHandler(element);
+				var event_memory = [];
+				for (var event in events_data[key]){
+					if (events_data[key][event].type == settings.triggered_by){
+						rememberEventHandlers(element, event_memory);
+						removeEventHandlers(element);
 						bindConfirmHandler(element);
-						break;
+						restoreEventHandlers(element);
 					}
 				}
 			}
 		});
 		
-		//	stashes existing trigger event from the element
-		function rememberEventHandler(element){
+		//	stashes existing trigger events for re-use later
+		function rememberEventHandlers(element, event_memory){
 			var events = element.data("events");
-			var event_memory = [];
 			for (var event in events){
-				var event_object = events[event][0];
-				if (event_object.type == settings.triggered_by){
-					event_memory.push({
-						type: event_object.type,
-						handler: event_object.handler
-					});
-					break;
+				for (var i=0, count=events[event].length; i<count; i++){
+					var event_object = events[event][i];
+					if (event_object.type == settings.triggered_by){
+						event_memory.push({
+							type: event_object.type,
+							handler: event_object.handler
+						});
+					}
 				}
 			}
 			element.data('__deferred_event_handlers__', event_memory);
 		};
 		
-		//	un-binds a trigger event from the element
-		function removeEventHandler(element){
+		//	un-binds trigger events from the element
+		function removeEventHandlers(element){
 			element.unbind(settings.triggered_by);
 		};
 		
-		//	re-binds a pre-existing trigger event to the element
-		function restoreEventHandler(element){
+		//	re-binds pre-existing trigger events to the element
+		function restoreEventHandlers(element){
 			var events = element.data().__deferred_event_handlers__;
 			for (var event in events){
 				var event_type = events[event].type;
 				var event_handler = events[event].handler;
-				element.unbind(event_type);
 				element.bind(event_type, event_handler);
-				element[event_type]();
-				element.unbind(event_type);
-				bindConfirmHandler(element);
 			}
 		};
 
@@ -79,18 +79,14 @@
 		
 		//	binds the confirm handler to the specified trigger event
 		function bindConfirmHandler(element){
-			element.bind(settings.triggered_by, (function(){showConfirm(element, getConfirmMessage(element))}));
+			element.bind(settings.triggered_by, (function(e){showConfirm(e, element, getConfirmMessage(element))}));
 		};
 		
-		//	the handler that intercepts the action
-		function showConfirm(target_element, message){
+		//	Display a confirm dialog: If the user confirms then carry on, 
+		//	otherwise prevent the event from bubbling further.
+		function showConfirm(event, target_element, message){
 			var confirmed = window.confirm(message);
-			if (confirmed){
-				restoreEventHandler(target_element);
-				return false;
-			} else {
-				return true;
-			}
+			if (!confirmed) event.stopImmediatePropagation();
 		};
 	};
 })(jQuery);
