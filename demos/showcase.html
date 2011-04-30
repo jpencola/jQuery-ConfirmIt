@@ -16,7 +16,7 @@
 			button.add {background-color: #9EF398;}
 			button.delete {background-color: #F37C9E;}
 			button.undo {background-color: #B878F3;}
-			button.awesome {background-color: #B878F3;}
+			button.awesome {background-color: #E795C6;}
 			input.correct {background-color: #9EF398;}
 			input.incorrect {background-color: #F37C9E;}
 		</style>
@@ -25,6 +25,16 @@
 		
 		<script type="text/javascript">
 			$(function() {
+				
+				
+				$('body').bind(
+					'DOMNodeInserted',
+					function( objEvent ){
+						console.log(objEvent.target);	
+					});
+				
+				
+				
 				/*	Addition Button: 
 				--	See how custom logic fires when confirmed
 				--	See how the class attribute is used to set a custom confirm message
@@ -67,6 +77,13 @@
 					alert('Your awesome fired 3.');
 				});
 				
+				/*	Spawn element
+				--	Adds new elements to the DOM
+				*/
+				$('#spawner').click(function(e){
+					$("#spawn-container").append('<button title="Undo Things" class="confirmit" onmouseup="javascript: alert(\'hi\');" data-confirmit-message="Are you sure you want to undo your changes?">Dynamic Button</button>');
+				});
+				
 				/*	ConfirmIt instances
 					------------------------------------------------
 				--	In this example I'm passing it the optional "triggered_by" specifier,
@@ -87,6 +104,7 @@
 	</head>
 	<body>
 		<h1>ConfirmIt Examples</h1>
+		<div id="event-log">...</div>
 		<div class="section">
 			<button id="add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Add</button>
 			<input id="sum-input" value="0" readonly="true"></input>
@@ -98,7 +116,11 @@
 			<button id="undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
 		</div>
 		<div class="section">
-			<button id="awesome" title="Sequence Awesomeness" class="confirmit" data-confirmit-message="Are you awesome?">Awesome</button>
+			<button id="awesome" title="Sequence Awesomeness" class="awesome confirmit" data-confirmit-message="Are you awesome?">Awesome</button>
+		</div>
+		<div class="section">
+			<button id="spawner" title="Spawns elements" class="spawn">Spawn</button>
+			<div id="spawn-container"></div>
 		</div>
 	</body>
 </html>
