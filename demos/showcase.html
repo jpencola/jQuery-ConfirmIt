@@ -99,6 +99,13 @@
 				$("#addition-answer").confirmIt({
 					triggered_by: 'blur'
 				});
+				
+				// Late bound event test
+				$("#late-undo-binder").one("click", function(){
+					$("#late-undo").click(function(){
+						alert("Late undo click");
+					});
+				});
 			});
 		</script>
 	</head>
@@ -121,6 +128,10 @@
 			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
 			<div class="offspring" data-confirmit-message="Are you sure you want to do this???">clicky thing</div>
 			<div id="spawn-container"></div>
+		</div>
+		<div class="section">
+			<button id="late-undo" title="Undo Things" class="undo confirmit">Undo</button>
+			<button id="late-undo-binder" title="Bind event to Undo" class="">Late Bind to Undo</button>
 		</div>
 	</body>
 </html>

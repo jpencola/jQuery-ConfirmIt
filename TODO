@@ -7,6 +7,9 @@ TODO v.1.0
   For example, if someone instantiates ConfirmIt, but then later in the code binds the event that should trigger a confirmation.
   One approach would be to make the decision that the plugin must be made aware of that change in the code (ie: some sort of "refresh")
   Another approach could be that we listen for events at the Window level 
+
+- Since we are in the context of jQuery, look at the viability of Defer: does it make sense? does it benefit us?
+  http://api.jquery.com/category/deferred-object/
   
 - Demonstrate additional events being confirmed:
 	- link-out confirms

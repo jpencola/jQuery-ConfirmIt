@@ -27,15 +27,16 @@
 		//	re-orders the event handlers for the element that needs a confirmation
 		function initConfirm(element){
 			var events_data = element.data("events");
-			for (var key in events_data){
+			var hasEvents = !!events_data;
+			var hasTriggerEvent = (function(){try{return !!events_data[settings.triggered_by]}catch(ex){return false}})();
+			if (hasEvents && hasTriggerEvent){
+				var trigger_events = events_data[settings.triggered_by];
 				var event_memory = [];
-				for (var event in events_data[key]){
-					if (events_data[key][event].type == settings.triggered_by){
-						rememberEventHandlers(element, event_memory);
-						removeEventHandlers(element);
-						bindConfirmHandler(element);
-						restoreEventHandlers(element);
-					}
+				for (var event in trigger_events){
+					rememberEventHandlers(element, event_memory);
+					removeEventHandlers(element);
+					bindConfirmHandler(element);
+					restoreEventHandlers(element);
 				}
 			}
 		};
