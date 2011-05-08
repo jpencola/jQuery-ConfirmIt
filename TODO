@@ -3,6 +3,8 @@ TODO v.1.0
 
 *Un-official TODO list*
 
+- Fix bug in the <body> event binding (DOMNodeInserted) where each intialization of ConfirmIt binds an additional event.
+
 - Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
 - Since we are in the context of jQuery, look at the viability of Defer: does it make sense? does it benefit us?
