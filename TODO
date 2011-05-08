@@ -20,3 +20,5 @@ TODO v.1.0
 - Evaluate any additional options we want to include in this version
 
 - Add simple rules syntax for advanced (optional) confirmation determination.  
+
+- Add a method to destroy the plugin
