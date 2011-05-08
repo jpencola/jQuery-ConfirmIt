@@ -176,8 +176,12 @@
 		</div>
 		<div class="section">
 			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
-			<!--div class="offspring confirmit" data-confirmit-message="Are you sure you want to do this???">clicky thing</div-->
 			<div id="spawn-container"></div>
+			<pre>
+				$("div.offspring").confirmIt({
+					triggered_by: 'mouseup'
+				});
+			</pre>
 		</div>
 		<div class="section">
 			<button id="late-undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
