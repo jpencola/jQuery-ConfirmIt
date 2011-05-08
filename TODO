@@ -3,19 +3,14 @@ TODO v.1.0
 
 *Un-official TODO list*
 
-- Decide how we want to approach late binding of events that should trigger confirmations. 
-  For example, if someone instantiates ConfirmIt, but then later in the code binds the event that should trigger a confirmation.
-  One approach would be to make the decision that the plugin must be made aware of that change in the code (ie: some sort of "refresh")
-  Another approach could be that we listen for events at the Window level 
+- Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
 - Since we are in the context of jQuery, look at the viability of Defer: does it make sense? does it benefit us?
   http://api.jquery.com/category/deferred-object/
-  
-- Demonstrate additional events being confirmed:
-	- link-out confirms
-	- ...
 
 - Flesh out the README with "recipe" style examples
+
+- Clean up the "showcase" page. 
 
 - Evaluate any additional options we want to include in this version
 

@@ -6,6 +6,13 @@
 		<style type="text/css">
 			/* Wrap rules that are > 3 properties long */ 
 			body {margin:35px;}
+			pre {
+				white-space:normal;
+				color: #C1C1C1;
+				background-color: #323232;
+				line-height: 28px;
+				text-indent: 12px;
+			}
 			div.section {
 				margin:25px 0; 
 				border-bottom: solid 1px #c1c1c1;
@@ -81,10 +88,30 @@
 				--	Adds new elements to the DOM, but they still abide by the ConfirmIt rules.
 				*/
 				$('#spawner').click(function(e){
-					$(".offspring:first").clone().mouseup(function(){alert("Now you've done it... you've woken the spawn of satan!")}).prependTo("#spawn-container");
+					$('#spawn-container').html('<div class="offspring confirmit" data-confirmit-message="Are you sure you want to do this???">clicky thing</div>');
+					$("div.offspring").mouseup(function(){alert("Now you've done it... you've woken the spawn of satan!")});
 				});
 				
-				/*	ConfirmIt instances
+				/*	Late bound event demo
+				--	An element exists in the DOM that matches the ConfirmIt selector rule to have a confirmation, 
+				--	however, that element has no matching "triggered_by" event bound to it at the time the plugin 
+				--	is instantiated. This demo shows how even when events that match the "triggered_by" event are 
+				--	late-bound, they still must be confirmed before firing.	
+				*/
+				$("#late-undo-binder").one("click", function(){
+					$("#late-undo").mouseup(function(){
+						alert("Changes have been undone");
+					});
+				});
+				
+				/*	Link demo
+				--	When dealing with Anchor (</a>) elements, ConfirmIt is best used by working with triggers such as "click" or "mousedown". 
+				--	Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
+				--	Anchor element to do so.
+				*/
+				//$("#a.confirmit");
+				
+				/*	Begin ConfirmIt instantiation
 					------------------------------------------------
 				--	In this example I'm passing it the optional "triggered_by" specifier,
 				--	which tells the confirm prompt to intercept that event on the elements matched by the selector.	
@@ -100,12 +127,12 @@
 					triggered_by: 'blur'
 				});
 				
-				// Late bound event test
-				$("#late-undo-binder").one("click", function(){
-					$("#late-undo").mouseup(function(){
-						alert("Changes have been undone");
-					});
+				$("div.offspring").confirmIt({
+					triggered_by: 'mouseup'
 				});
+				
+				$("a.confirmit").confirmIt();
+				/* / End ConfirmIt instantiation */
 			});
 		</script>
 	</head>
@@ -114,24 +141,59 @@
 		<div class="section">
 			<button id="add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Add</button>
 			<input id="sum-input" value="0" readonly="true"></input>
+			<pre>
+				$("button.confirmit").confirmIt({
+					triggered_by: 'mouseup',
+					message: "No, wait!"
+				});
+			</pre>
 		</div>
 		<div class="section">
 			Solve: 2 + 3 = <input id="addition-answer" data-confirmit-message="You get one shot, are you sure that is the answer?">
+			<pre>
+				$("#addition-answer").confirmIt({
+					triggered_by: 'blur'
+				});
+			</pre>
 		</div>
 		<div class="section">
 			<button id="undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
+			<pre>
+				$("button.confirmit").confirmIt({
+					triggered_by: 'mouseup',
+					message: "No, wait!"
+				});
+			</pre>
 		</div>
 		<div class="section">
 			<button id="awesome" title="Sequence Awesomeness" class="awesome confirmit" data-confirmit-message="Are you awesome?">Awesome</button>
+			<pre>
+				$("button.confirmit").confirmIt({
+					triggered_by: 'mouseup',
+					message: "No, wait!"
+				});
+			</pre>
 		</div>
 		<div class="section">
 			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
-			<div class="offspring" data-confirmit-message="Are you sure you want to do this???">clicky thing</div>
+			<!--div class="offspring confirmit" data-confirmit-message="Are you sure you want to do this???">clicky thing</div-->
 			<div id="spawn-container"></div>
 		</div>
 		<div class="section">
 			<button id="late-undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
 			<button id="late-undo-binder" title="Bind event to Undo" class="">Late Bind to Undo</button>
+			<pre>
+				$("button.confirmit").confirmIt({
+					triggered_by: 'mouseup',
+					message: "No, wait!"
+				});
+			</pre>
+		</div>
+		<div class="section">
+			<a class="confirmit" title="Visit Duck-Duck-Go" data-confirmit-message="Are you sure you want to leave this site?" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
+			<pre>
+				$("a.confirmit").confirmIt();
+			</pre>
 		</div>
 	</body>
 </html>

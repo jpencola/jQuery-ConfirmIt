@@ -27,7 +27,10 @@
 		//	re-orders the event handlers for the element that needs a confirmation
 		//	elements that are candidates for late-binding still get the confirmation event bound (else clause)
 		function initConfirm(element){
-			var events_data = element.data("events");
+			var is_already_initialized = !!(element.data('data-confirmit-ready')); 
+			if (is_already_initialized) return;
+			
+			var events_data = element.data('events');
 			var hasEvents = !!events_data;
 			var hasTriggerEvent = (function(){try{return !!events_data[settings.triggered_by]}catch(ex){return false}})();
 			if (hasEvents && hasTriggerEvent){
@@ -46,7 +49,7 @@
 		
 		//	stashes existing trigger events for re-use later
 		function rememberEventHandlers(element, event_memory){
-			var events = element.data("events");
+			var events = element.data('events');
 			for (var event in events){
 				for (var i=0, count=events[event].length; i<count; i++){
 					var event_object = events[event][i];
@@ -90,14 +93,20 @@
 		
 		//	binds the confirm handler to the specified trigger event
 		function bindConfirmHandler(element){
+			element.data('data-confirmit-ready', true);
 			element.bind(settings.triggered_by, (function(e){showConfirm(e, element, getConfirmMessage(element))}));
 		};
 		
-		//	Display a confirm dialog: If the user confirms then carry on, 
-		//	otherwise prevent the event from bubbling further.
+		//	Display a confirm dialog
+		//	If the user declines then first stop any further bubbling of the event
+		//	then, if the element is an Anchor, prevent it's default behavior.
 		function showConfirm(event, target_element, message){
 			var confirmed = window.confirm(message);
-			if (!confirmed) event.stopImmediatePropagation();
+			if (!confirmed){
+				event.stopImmediatePropagation();
+				var is_anchor_element = !!(event.target.nodeName === 'A');
+				if (is_anchor_element) event.preventDefault();
+			}
 		};
 	};
 })(jQuery);
