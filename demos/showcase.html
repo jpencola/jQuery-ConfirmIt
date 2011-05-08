@@ -102,8 +102,8 @@
 				
 				// Late bound event test
 				$("#late-undo-binder").one("click", function(){
-					$("#late-undo").click(function(){
-						alert("Late undo click");
+					$("#late-undo").mouseup(function(){
+						alert("Changes have been undone");
 					});
 				});
 			});
@@ -130,7 +130,7 @@
 			<div id="spawn-container"></div>
 		</div>
 		<div class="section">
-			<button id="late-undo" title="Undo Things" class="undo confirmit">Undo</button>
+			<button id="late-undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
 			<button id="late-undo-binder" title="Bind event to Undo" class="">Late Bind to Undo</button>
 		</div>
 	</body>

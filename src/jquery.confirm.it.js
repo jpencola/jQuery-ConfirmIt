@@ -25,6 +25,7 @@
 		});
 		
 		//	re-orders the event handlers for the element that needs a confirmation
+		//	elements that are candidates for late-binding still get the confirmation event bound (else clause)
 		function initConfirm(element){
 			var events_data = element.data("events");
 			var hasEvents = !!events_data;
@@ -38,6 +39,8 @@
 					bindConfirmHandler(element);
 					restoreEventHandlers(element);
 				}
+			} else {
+				bindConfirmHandler(element);
 			}
 		};
 		
@@ -98,6 +101,3 @@
 		};
 	};
 })(jQuery);
-
-//TODO: remove this later...
-function trace(msg){try{console.log(msg)}catch(ex){}};
