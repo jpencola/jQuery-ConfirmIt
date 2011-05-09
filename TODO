@@ -7,9 +7,6 @@ TODO v.1.0
 
 - Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
-- Since we are in the context of jQuery, look at the viability of Defer: does it make sense? does it benefit us?
-  http://api.jquery.com/category/deferred-object/
-
 - Flesh out the README with "recipe" style examples
 
 - Clean up the "showcase" page. 

@@ -10,7 +10,7 @@
 		$.extend(settings, options);
 		
 		//	listen for future elements added to the DOM 
-		$('body').bind('DOMNodeInserted', function(event){initConfirm($(event.target))});
+		$('body').bind('DOMNodeInserted.confirmit', function(event){initConfirm($(event.target))});
 		
 		//	for each matching element that needs a confirmation step...
 		//	iterate over all events that it has currently bound
@@ -94,7 +94,7 @@
 		//	binds the confirm handler to the specified trigger event
 		function bindConfirmHandler(element){
 			element.data('data-confirmit-ready', true);
-			element.bind(settings.triggered_by, (function(e){showConfirm(e, element, getConfirmMessage(element))}));
+			element.bind(settings.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
 		};
 		
 		//	Display a confirm dialog
