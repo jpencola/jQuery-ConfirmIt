@@ -89,7 +89,7 @@
 				*/
 				$('#spawner').click(function(e){
 					$('#spawn-container').html('<div class="offspring confirmit" data-confirmit-message="Are you sure you want to do this???">clicky thing</div>');
-					$("div.offspring").mouseup(function(){alert("Now you've done it... you've woken the spawn of satan!")});
+					$("div.offspring").click(function(){alert("Now you've done it... you've woken the spawn of satan!")});
 				});
 				
 				/*	Late bound event demo
@@ -125,10 +125,6 @@
 				
 				$("#addition-answer").confirmIt({
 					triggered_by: 'blur'
-				});
-				
-				$("div.offspring").confirmIt({
-					triggered_by: 'mouseup'
 				});
 				
 				$("a.confirmit").confirmIt();
@@ -179,7 +175,7 @@
 			<div id="spawn-container"></div>
 			<pre>
 				$("div.offspring").confirmIt({
-					triggered_by: 'mouseup'
+					triggered_by: 'click'
 				});
 			</pre>
 		</div>

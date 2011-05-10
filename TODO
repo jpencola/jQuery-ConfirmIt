@@ -3,15 +3,14 @@ TODO v.1.0
 
 *Un-official TODO list*
 
-- Fix bug in the <body> event binding (DOMNodeInserted) where each intialization of ConfirmIt binds an additional event.
-
+- Fix the bug where subsequent calls to "init" from DOMInsert handler doesn't pass the proper options. Can be seen in "spawner" demo 
+  if you change the "triggered_by" event to something other than "click".
+  
 - Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
 - Flesh out the README with "recipe" style examples
 
 - Clean up the "showcase" page. 
-
-- Evaluate any additional options we want to include in this version
 
 - Add simple rules syntax for advanced (optional) confirmation determination.  
 
