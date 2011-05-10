@@ -1,6 +1,7 @@
 (function($){
 	var methods = {
 		init: function(options){
+			console.log('init');
 			//	default settings
 			var settings = {
 				triggered_by: "click",
@@ -11,6 +12,7 @@
 			$.extend(settings, options);
 			
 			//	listen for future elements added to the DOM 
+			$('body').unbind('DOMNodeInserted.confirmit');
 			$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init')});
 			
 			//	for each matching element that needs a confirmation step...
@@ -105,7 +107,7 @@
 			};
 		},
 		destroy: function(){
-			// stuff here...
+			// TODO
 		}
 	};
 	
@@ -115,7 +117,7 @@
 		} else if (typeof method === 'object' || !method) {
 			return methods.init.apply(this, arguments);
 		} else {
-			$.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
+			$.error( 'Method ' +  method + ' does not exist on jQuery.confirmit' );
 		}
 	};
 })(jQuery);
