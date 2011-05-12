@@ -14,114 +14,100 @@ $(document).ready(function(){
 	
 	
 	
-	var formKids = $("#myForm").find("select,textarea,:text");
-	var checkKids = $("#myForm").find(":checkbox,:radio");	
-	var radioKids = $("#myForm").children(":radio");	
-	
-	var formSubmits = $("#myForm").find("input[type=submit],button");
-	
-	formKids.each(function (i) {
-			console.log($(this).attr("name") + " original = "+$(this).val());
-          $(this).data('initial_value', $(this).val());
-     });
-	 checkKids.each(function (i) {
-		var val = $(this).is(":checked") ? "t": "f";
-		console.log($(this).attr("name") + " original = "+val);
-          $(this).data('initial_value', val);
-     });
-	 
-	 
-	 
-	formSubmits.click(function () {
-		formSubmitted = true;
-	    console.log("form button clicked");
-		window.onbeforeunload = nothing;	
-	});
-	var formSubmitted = false;
-	
-	function LeaveWarning(e) {
-	
-	
-		var formHasChanged = false;
+	function initLeavePageWarning(formSelector)
+	{
+		var me = this;
+		me.window = window;
+		
+		var form = $(formSelector);
+		
+		var formKids = form.find("select,textarea,:text");
+		var checkKids = form.find(":checkbox,:radio");		
+		var formSubmits = form.find("input[type=submit],button");
 		
 		formKids.each(function (i) {
-			var oldVal = $(this).data('initial_value') + "";
-			var newVal = $(this).val() + "";
-			
-			if (oldVal != newVal)
-			{
-				console.log("formKids "+$(this).attr("name") +" "+ oldVal+ " != "+newVal);
-				formHasChanged = true;
-				return false; //break
-			}
+				console.log($(this).attr("name") + " original = "+$(this).val());
+			  $(this).data('initial_value', $(this).val());
+		});
+		checkKids.each(function (i) {
+			var val = $(this).is(":checked") ? "t": "f";
+			console.log($(this).attr("name") + " original = "+val);
+			  $(this).data('initial_value', val);
+		});
+		formSubmits.click(function () {
+			formSubmitted = true;
+			console.log("form button clicked");
+			window.onbeforeunload = nothing;	
 		});
 		
-		if(!formHasChanged)
-		{
-			checkKids.each(function (i) {
+		function LeaveWarning(e) {	
+			var formHasChanged = false;
+			
+			formKids.each(function (i) {
 				var oldVal = $(this).data('initial_value') + "";
-				var newVal = ($(this).is(":checked") ? "t": "f")+ "";
+				var newVal = $(this).val() + "";
+				
 				if (oldVal != newVal)
 				{
-					console.log("checkKids "+$(this).attr("name") +" "+ oldVal+ " != "+newVal);
+					console.log("formKids "+$(this).attr("name") +" "+ oldVal+ " != "+newVal);
 					formHasChanged = true;
 					return false; //break
 				}
 			});
-		}
-		/*
-		if(!formHasChanged)
-		{
-			radioKids.each(function (i) {
-				var oldVal = $(this).data('initial_value') + "";
-				var newVal = $(this).is(":selected") ? true: false;
-				if (oldVal != newVal)
-				{
-					console.log(oldVal+ " != "+newVal);
-					formHasChanged = true;
-					return false; //break
-				}
-			 });
-		}
-		*/
-		console.log("formHasChanged= "+formHasChanged);
-		console.log("formSubmitted= "+formSubmitted);
-		if(formSubmitted || !formHasChanged)
-		{
-			console.log("set event to null and unload");
-			window.onbeforeunload = nothing;
-			$(window).unload();
-			return true;
-		}
-	  var message = "It looks like you have unfinished business. Leave this page?",
-	  e = e || window.event;
-	  // For IE and Firefox
-	  if (e) {
-		e.returnValue = message;
-	  }
+			
+			if(!formHasChanged)
+			{
+				checkKids.each(function (i) {
+					var oldVal = $(this).data('initial_value') + "";
+					var newVal = ($(this).is(":checked") ? "t": "f")+ "";
+					if (oldVal != newVal)
+					{
+						console.log("checkKids "+$(this).attr("name") +" "+ oldVal+ " != "+newVal);
+						formHasChanged = true;
+						return false; //break
+					}
+				});
+			}
+			
+			console.log("formHasChanged= "+formHasChanged);
+			console.log("formSubmitted= "+formSubmitted);
+			if(formSubmitted || !formHasChanged)
+			{
+				console.log("set event to null and unload");
+				window.onbeforeunload = nothing;
+				$(window).unload();
+				return true;
+			}
+		  var message = "It looks like you have unfinished business. Leave this page?",
+		  e = e || window.event;
+		  // For IE and Firefox
+		  if (e) {
+			e.returnValue = message;
+		  }
 
-	  // For Safari
-	  return message;
+		  // For Safari
+		  return message;
 	};
 	
-	window.onbeforeunload = LeaveWarning;
+		
+		var formSubmitted = false;
+		me.window.onbeforeunload = LeaveWarning;
+	}
 	
 	
 	
-	$("#myform").submit(function () {
-		formSubmitted = true;
-	    console.log("form submitted");
-		window.onbeforeunload = nothing;	
-	});
+	initLeavePageWarning("#myForm");
 	
-	/*
-	$("#myForm").confirmIt({
-		triggered_by: 'unload',
-		message: "Leave Page?"
-	});*/
+	initLeavePageWarning("#myForm2");
+	
+	//now we need  a way to remove one without affecting the other.
+
+	
 });
 
 </script>
+
+
 
 <body>
 
@@ -134,6 +120,7 @@ $(document).ready(function(){
 <fieldset>
 <legend>sample form with leave page warning</legend>
 
+<div style="float:left">
 text input <br/>
 <input type="text" value="Steve" name="firstname" />
 
@@ -152,10 +139,15 @@ single select
   <option value="4">ConfirmIt</option>
   <option value="5">ConfirmThis</option>
 </select>
-<br /><br />
+
+</div>
+
+<div style="float:left;margin-left:10px;">
+
+
 multi select 
 <br/>
-<select multiple  name="multiselect">
+<select multiple name="multiselect">
   <option value="1">SimpleConfirm</option>
   <option value="2">QuickConfirm</option>
   <option value="3" selected>CoolConfirm</option>
@@ -170,19 +162,34 @@ not checked by default:
 <input type="checkbox" name="uncheckedbox" value="true" />
 <br/>
 checked by default:
-<br/><input type="checkbox" name="checkedbox" value="true" checked="checked" />
+<br/>
+<input type="checkbox" name="checkedbox" value="true" checked="checked" />
 
 <br /><br />
-radio 
+radio <br />
 <input type="radio" name="gender" value="male" checked="checked" /> Male<br />
 <input type="radio" name="gender" value="female" /> Female
 
+</div>
 
-<br /><br />
+<br style="clear:both" /><br />
 <input type="submit" value="submit form" />
 
 
-<br /><br />
+<br />
 </fieldset>
 </form>
+
+<form id="myForm2" action="test.htm" method="post">
+<fieldset>
+<legend>a second form </legend>
+
+This form should have no affect on the first form.
+<input type="text" value="Steve" name="firstname" />
+<input type="submit" value="submit form" />
+
+<br />
+</fieldset>
+</form>
+
 </body>
