@@ -1,42 +1,124 @@
 <html>
 <head>
-<title>JWarning Test</title>
+<title>Leave Page On Incomplete Form Test</title>
 </head>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js" type="text/javascript"></script>
-<script src="/src/jquery.confirm.it.js" type="text/javascript"></script>
+		<script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+		<script src="../src/jquery.confirm.it.js" type="text/javascript"></script>
 
 <script  type="text/javascript">
 
 $(document).ready(function(){
-	console.log("v 1.2");
-	
-	// API will be $(".confirm").QuickConfirm("default warning")
-	//title attribute will override the default
-	initConfirm();
-	
-	// let's leave this feature out 1st goround
-	//initExternalLinkWarning();
+
+	console.log("v 1.3");
 	
 	
 	
+	var formKids = $("#myForm").find("select,textarea,:text");
+	var checkKids = $("#myForm").find(":checkbox,:radio");	
+	var radioKids = $("#myForm").children(":radio");	
 	
-	 $("input,select,:checkbox,:input,textarea,:text").change(function (e) {
-	 trace("change detected");
-		window.onbeforeunload = LeaveWarning;
-	});
+	var formSubmits = $("#myForm").find("input[type=submit],button");
 	
-	$('form input[type=text], form textarea').each(function (i) {
+	formKids.each(function (i) {
+			console.log($(this).attr("name") + " original = "+$(this).val());
           $(this).data('initial_value', $(this).val());
      });
-
-     $('form input[type=text], form textarea').keyup(function() {
-          if ($(this).val() != $(this).data('initial_value')) {
-	 trace("text change detected");
-		window.onbeforeunload = LeaveWarning;
-          }
+	 checkKids.each(function (i) {
+		var val = $(this).is(":checked") ? "t": "f";
+		console.log($(this).attr("name") + " original = "+val);
+          $(this).data('initial_value', val);
      });
+	 
+	 
+	 
+	formSubmits.click(function () {
+		formSubmitted = true;
+	    console.log("form button clicked");
+		window.onbeforeunload = nothing;	
+	});
+	var formSubmitted = false;
 	
+	function LeaveWarning(e) {
+	
+	
+		var formHasChanged = false;
+		
+		formKids.each(function (i) {
+			var oldVal = $(this).data('initial_value') + "";
+			var newVal = $(this).val() + "";
+			
+			if (oldVal != newVal)
+			{
+				console.log("formKids "+$(this).attr("name") +" "+ oldVal+ " != "+newVal);
+				formHasChanged = true;
+				return false; //break
+			}
+		});
+		
+		if(!formHasChanged)
+		{
+			checkKids.each(function (i) {
+				var oldVal = $(this).data('initial_value') + "";
+				var newVal = ($(this).is(":checked") ? "t": "f")+ "";
+				if (oldVal != newVal)
+				{
+					console.log("checkKids "+$(this).attr("name") +" "+ oldVal+ " != "+newVal);
+					formHasChanged = true;
+					return false; //break
+				}
+			});
+		}
+		/*
+		if(!formHasChanged)
+		{
+			radioKids.each(function (i) {
+				var oldVal = $(this).data('initial_value') + "";
+				var newVal = $(this).is(":selected") ? true: false;
+				if (oldVal != newVal)
+				{
+					console.log(oldVal+ " != "+newVal);
+					formHasChanged = true;
+					return false; //break
+				}
+			 });
+		}
+		*/
+		console.log("formHasChanged= "+formHasChanged);
+		console.log("formSubmitted= "+formSubmitted);
+		if(formSubmitted || !formHasChanged)
+		{
+			console.log("set event to null and unload");
+			window.onbeforeunload = nothing;
+			$(window).unload();
+			return true;
+		}
+	  var message = "It looks like you have unfinished business. Leave this page?",
+	  e = e || window.event;
+	  // For IE and Firefox
+	  if (e) {
+		e.returnValue = message;
+	  }
+
+	  // For Safari
+	  return message;
+	};
+	
+	window.onbeforeunload = LeaveWarning;
+	
+	
+	
+	$("#myform").submit(function () {
+		formSubmitted = true;
+	    console.log("form submitted");
+		window.onbeforeunload = nothing;	
+	});
+	
+	/*
+	$("#myForm").confirmIt({
+		triggered_by: 'unload',
+		message: "Leave Page?"
+	});*/
 });
 
 </script>
@@ -47,30 +129,60 @@ $(document).ready(function(){
 
 <br/>
 <br/>
-<a href="#" class="confirm" title="don't push my button">a link button</a>
 
-<form action="test.htm" method="post">
+<form id="myForm" action="test.htm" method="post">
+<fieldset>
+<legend>sample form with leave page warning</legend>
 
-<input type="text" value="" name="firstname" />
+text input <br/>
+<input type="text" value="Steve" name="firstname" />
+
+
 <br /><br />
-<input type="checkbox" name="iscool" value="true" />
+text area <br/>
+<textarea name="myTextArea">this is a text area</textarea>
 <br /><br />
 
-Plugin Name:  
-<select>
-  <option value="volvo">SimpleConfirm</option>
-  <option value="audi">QuickConfirm</option>
-  <option value="audi">CoolConfirm</option>
-  <option value="saab">ConfirmIt</option>
-  <option value="mercedes">ConfirmThis</option>
+single select 
+<br/>
+<select name="singleselect">
+  <option value="1">SimpleConfirm</option>
+  <option value="2" selected>QuickConfirm</option>
+  <option value="3">CoolConfirm</option>
+  <option value="4">ConfirmIt</option>
+  <option value="5">ConfirmThis</option>
+</select>
+<br /><br />
+multi select 
+<br/>
+<select multiple  name="multiselect">
+  <option value="1">SimpleConfirm</option>
+  <option value="2">QuickConfirm</option>
+  <option value="3" selected>CoolConfirm</option>
+  <option value="4" selected>ConfirmIt</option>
+  <option value="5">ConfirmThis</option>
 </select>
 <br /><br />
 
 
-<input type="submit" value="PUSH ME" class="confirm" title="don't push my button" />
+not checked by default:
+<br/>
+<input type="checkbox" name="uncheckedbox" value="true" />
+<br/>
+checked by default:
+<br/><input type="checkbox" name="checkedbox" value="true" checked="checked" />
+
+<br /><br />
+radio 
+<input type="radio" name="gender" value="male" checked="checked" /> Male<br />
+<input type="radio" name="gender" value="female" /> Female
 
 
 <br /><br />
-<button class="confirm" title="don't push my button">PUSH ME</button>
+<input type="submit" value="submit form" />
+
+
+<br /><br />
+</fieldset>
 </form>
 </body>
