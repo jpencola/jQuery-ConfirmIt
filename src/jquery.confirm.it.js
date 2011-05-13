@@ -107,6 +107,8 @@
 			return this.each(function(){
 				var element = $(this);
 	            element.unbind('.confirmit');
+	            element.removeData('data-confirmit-ready');
+	            element.removeData('__deferred_event_handlers__');
 			});
 		}
 	};
