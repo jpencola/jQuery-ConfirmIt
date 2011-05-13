@@ -15,3 +15,5 @@ TODO v.1.0
 - Add simple rules syntax for advanced (optional) confirmation determination.  
 
 - Add a method to destroy the plugin
+
+- Be consistent with confirmIt data namespaces, change '__deferred_event_handlers__' to format of 'data-confirmit-XXXX'  
