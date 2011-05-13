@@ -25,7 +25,6 @@
 				if (is_already_initialized) return;
 				
 				var events_data = element.data('events');
-				console.dir(events_data);
 				var hasEvents = !!events_data;
 				var hasTriggerEvent = (function(){try{return !!events_data[settings.triggered_by]}catch(ex){return false}})();
 				if (hasEvents && hasTriggerEvent){
@@ -105,8 +104,10 @@
 			});
 		},
 		destroy: function(){
-			// TODO
-			//should init store the matching elements so destroy can unbind them?
+			return this.each(function(){
+				var element = $(this);
+	            element.unbind('.confirmit');
+			});
 		}
 	};
 	
