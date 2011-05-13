@@ -13,7 +13,6 @@ TODO v.1.0
 - Clean up the "showcase" page. 
 
 - Add simple rules syntax for advanced (optional) confirmation determination.  
-
-- Add a method to destroy the plugin
+  ** Consider how a rules engine may work to accomplish confirmation invocation for larger groupings of logic. For example the forms demo. 
 
 - Be consistent with confirmIt data namespaces, change '__deferred_event_handlers__' to format of 'data-confirmit-XXXX'  
