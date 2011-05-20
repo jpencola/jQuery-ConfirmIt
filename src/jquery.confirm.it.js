@@ -1,3 +1,5 @@
+
+var global_formNavigate = true;	
 (function($){
 	var methods = {
 		init: function(options){
@@ -9,6 +11,7 @@
 			//	bind the confirm event so it is the first one in the bubbling phase
 			//	re-bind all the other events
 			return this.each(function(){
+				console.log("init");
 				var settings = {
 					triggered_by: "click",
 					message: "Are you sure?"
@@ -103,6 +106,48 @@
 				};
 			});
 		},
+		initleave: function(options){
+				console.log("initleave ");
+				console.log($(this));
+				function confirmExit(event) {  
+					console.log("confirmExit global_formNavigate= "+global_formNavigate);
+					
+					if (global_formNavigate == true) 
+					{  
+						event.cancelBubble = true;  
+					}  
+					else  
+					{ 
+						return options.message;  
+					}
+				}
+				
+				console.log("set unload ");
+				window.onbeforeunload = confirmExit; 
+				
+				$(this).find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
+					console.log("change detected");
+					global_formNavigate = false;
+				});
+				
+				$(this).find("textarea, :text").keydown(function(){
+					console.log("keydown change detected");
+					global_formNavigate = false;
+				});
+				$(this).find(":submit").click(function(){
+					console.log("form submitted ");
+					global_formNavigate = true;
+				});
+				
+				console.log("exit ");
+		
+			return this;
+			
+			
+			
+			
+			
+		},
 		destroy: function(){
 			return this.each(function(){
 				var element = $(this);
@@ -115,8 +160,15 @@
 	
 	$.fn.confirmIt = function(method){
 		if (methods[method]){
+			console.log("method to apply = "+ method);
 			return methods[method].apply(this, Array.prototype.slice.call( arguments, 1 ));
-		} else if (typeof method === 'object' || !method) {
+		} 
+		else if (typeof method === 'object' || !method) 
+		{
+			if(method.triggered_by && method.triggered_by == 'unload')
+			{	 
+				return methods.initleave.apply(this, arguments);
+			}				
 			return methods.init.apply(this, arguments);
 		} else {
 			$.error( 'Method ' +  method + ' does not exist on jQuery.confirmit' );
