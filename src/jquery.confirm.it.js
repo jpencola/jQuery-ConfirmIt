@@ -56,7 +56,7 @@ var global_formNavigate = true;
 							}
 						}
 					}
-					element.data('__deferred_event_handlers__', event_memory);
+					element.data('data-confirmit-deferred-callbacks', event_memory);
 				};
 				
 				//	un-binds trigger events from the element
@@ -66,7 +66,7 @@ var global_formNavigate = true;
 				
 				//	re-binds pre-existing trigger events to the element
 				function restoreEventHandlers(element){
-					var events = element.data().__deferred_event_handlers__;
+					var events = element.data('data-confirmit-deferred-callbacks');
 					for (var event in events){
 						var event_type = events[event].type;
 						var event_handler = events[event].handler;
@@ -138,7 +138,7 @@ var global_formNavigate = true;
 				var element = $(this);
 	            element.unbind('.confirmit');
 	            element.removeData('data-confirmit-ready');
-	            element.removeData('__deferred_event_handlers__');
+	            element.removeData('data-confirmit-deferred-callbacks');
 			});
 		}
 	};
