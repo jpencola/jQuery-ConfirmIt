@@ -100,8 +100,15 @@
 				--	Adds new elements to the DOM, but they still abide by the ConfirmIt rules.
 				*/
 				$('#spawner').click(function(e){
-					$('#spawn-container').html('<div class="offspring confirmit" data-confirmit-message="Are you sure you want to do this???">clicky thing</div>');
-					$("div.offspring").click(function(){alert("Now you've done it... you've woken the spawn of satan!")});
+					var spawn = document.createElement('div');
+					spawn.className = "offspring confirmit {message: Really?}";
+					spawn.innerHTML = 'clicky thing';
+					$(spawn).confirmIt({
+						triggered_by: 'click',
+						live: true
+					});
+					$('#spawn-container').html(spawn);
+					$(spawn).click(function(){alert("Hi! Says the spawn.")});
 				});
 				$('#destroy-spawner').click(function(){
 					$("div.offspring").confirmIt('destroy');

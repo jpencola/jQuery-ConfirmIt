@@ -13,14 +13,16 @@ var global_formNavigate = true;
 			return this.each(function(){
 				var settings = {
 					triggered_by: "click",
-					message: "Are you sure?"
+					message: "Are you sure?",
+					live: false
 				};
 				//	apply any overrides to the settings
 				if (options) $.extend(settings, options);
 				
-				//	listen for future elements added to the DOM 
-				$('body').unbind('DOMNodeInserted.confirmit');
-				$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
+				//	listen for future (live) elements added to the DOM 
+				if (settings.live){
+					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
+				}
 				
 				var element = $(this);
 				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
@@ -81,6 +83,7 @@ var global_formNavigate = true;
 				function getConfirmMessage(element){
 					var confirm_message, classname = element.attr('class');
 					confirm_message = element.attr('data-confirmit-message');
+					console.log(element);
 					if (!confirm_message) confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]; // good candidate for a regexp
 					if (!confirm_message) confirm_message = settings.message;
 					return confirm_message;
