@@ -165,7 +165,7 @@ var global_formNavigate = true;
 		} 
 		else if (typeof method === 'object' || !method) 
 		{
-			if(method.triggered_by && method.triggered_by == 'unload')
+			if(arguments.triggered_by && arguments.triggered_by == 'unload')
 			{	 
 				return methods.initleave.apply(this, arguments);
 			}				
