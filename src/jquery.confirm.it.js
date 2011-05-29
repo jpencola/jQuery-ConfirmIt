@@ -107,8 +107,9 @@ var global_formNavigate = true;
 			});
 		},
 		initleave: function(options){
+		
 				console.log("initleave ");
-				console.log($(this));
+				
 				function confirmExit(event) {  
 					console.log("confirmExit global_formNavigate= "+global_formNavigate);
 					
