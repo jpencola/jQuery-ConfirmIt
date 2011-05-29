@@ -2,9 +2,6 @@ TODO v.1.0
 ----------
 
 *Un-official TODO list*
-
-- Fix the bug where subsequent calls to "init" from DOMInsert handler doesn't pass the proper options. Can be seen in "spawner" demo 
-  if you change the "triggered_by" event to something other than "click".
   
 - Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
@@ -14,5 +11,8 @@ TODO v.1.0
 
 - Add simple rules syntax for advanced (optional) confirmation determination.  
   ** Consider how a rules engine may work to accomplish confirmation invocation for larger groupings of logic. For example the forms demo. 
+  
+- Add LeavePage example to showcase
 
-- Be consistent with confirmIt data namespaces, change '__deferred_event_handlers__' to format of 'data-confirmit-XXXX'  
+- Namespace the leavepage event like the others. Can we do this since it's not a jQuery event?
+

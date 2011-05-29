@@ -1,5 +1,4 @@
 
-var global_formNavigate = true;	
 (function($){
 	var methods = {
 		init: function(options){
@@ -11,17 +10,18 @@ var global_formNavigate = true;
 			//	bind the confirm event so it is the first one in the bubbling phase
 			//	re-bind all the other events
 			return this.each(function(){
-				console.log("init");
 				var settings = {
 					triggered_by: "click",
-					message: "Are you sure?"
+					message: "Are you sure?",
+					live: false
 				};
 				//	apply any overrides to the settings
 				if (options) $.extend(settings, options);
 				
-				//	listen for future elements added to the DOM 
-				$('body').unbind('DOMNodeInserted.confirmit');
-				$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
+				//	listen for future (live) elements added to the DOM 
+				if (settings.live){
+					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
+				}
 				
 				var element = $(this);
 				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
@@ -57,7 +57,7 @@ var global_formNavigate = true;
 							}
 						}
 					}
-					element.data('__deferred_event_handlers__', event_memory);
+					element.data('data-confirmit-deferred-callbacks', event_memory);
 				};
 				
 				//	un-binds trigger events from the element
@@ -67,7 +67,7 @@ var global_formNavigate = true;
 				
 				//	re-binds pre-existing trigger events to the element
 				function restoreEventHandlers(element){
-					var events = element.data().__deferred_event_handlers__;
+					var events = element.data('data-confirmit-deferred-callbacks');
 					for (var event in events){
 						var event_type = events[event].type;
 						var event_handler = events[event].handler;
@@ -107,71 +107,80 @@ var global_formNavigate = true;
 			});
 		},
 		initleave: function(options){
-		
-				console.log("initleave ");
+				//console.log('initLeave');
+				var element = $(this);
+				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
+				if (is_already_initialized) return;
 				
+				element.data('altered',false);
+				//the actual leave page event
 				function confirmExit(event) {  
-					console.log("confirmExit global_formNavigate= "+global_formNavigate);
+					//if the form has been not been altered
+					console.log("confirmExit() element.data('altered') = " + element.data('altered'));
 					
-					if (global_formNavigate == true) 
+					if (element.data('altered') == false)
 					{  
+					//cancel the event and leave the page
 						event.cancelBubble = true;  
 					}  
 					else  
 					{ 
+						//else pop up the confirm message
 						return options.message;  
 					}
 				}
 				
-				console.log("set unload ");
 				window.onbeforeunload = confirmExit; 
 				
-				$(this).find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
-					console.log("change detected");
-					global_formNavigate = false;
+				element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
+					element.data('altered',true);
 				});
 				
-				$(this).find("textarea, :text").keydown(function(){
-					console.log("keydown change detected");
-					global_formNavigate = false;
+				element.find("textarea, :text").keydown(function(){
+					element.data('altered',true);
 				});
-				$(this).find(":submit").click(function(){
-					console.log("form submitted ");
-					global_formNavigate = true;
+				element.find(":submit").click(function(){
+					element.data('altered',false);
 				});
-				
-				console.log("exit ");
 		
+	            element.data('data-confirmit-unload', true);
+	            element.data('data-confirmit-ready', true);
 			return this;
-			
-			
-			
-			
-			
 		},
 		destroy: function(){
+			//console.log("destroy");
+		
 			return this.each(function(){
 				var element = $(this);
+				if(element.data('data-confirmit-unload'))
+				{
+					element.removeData('data-confirmit-unload');
+					element.removeData('altered');
+					window.onbeforeunload = null;
+				}
 	            element.unbind('.confirmit');
 	            element.removeData('data-confirmit-ready');
-	            element.removeData('__deferred_event_handlers__');
+	            element.removeData('data-confirmit-deferred-callbacks');
 			});
 		}
 	};
 	
 	$.fn.confirmIt = function(method){
+		//console.log('confirmIt');
 		if (methods[method]){
-			console.log("method to apply = "+ method);
+			console.log("calling methods[method].apply");
 			return methods[method].apply(this, Array.prototype.slice.call( arguments, 1 ));
-		} 
-		else if (typeof method === 'object' || !method) 
-		{
-			if(method.triggered_by && method.triggered_by == 'unload')
-			{	 
+		} else if (typeof method === 'object' || !method){			
+			if(!!method && !!method.triggered_by && method.triggered_by == 'unload'){					
+				//console.log('enter initleave');
 				return methods.initleave.apply(this, arguments);
-			}				
+			}							
+			//console.log('enter init');
 			return methods.init.apply(this, arguments);
-		} else {
+		} else if (typeof method === 'string'){
+			//pass in a message string instead of an object with a message property
+			$(this).confirmIt({triggered_by:'click', message:method});
+		}else{
 			$.error( 'Method ' +  method + ' does not exist on jQuery.confirmit' );
 		}
 	};
