@@ -157,6 +157,9 @@
 				--	The default triggered_by is 'click'
 				
 				*/
+				$("#simple").click(function(){
+					alert('Simple button event fired');
+				});
 				$("button.simple").confirmIt("Do you really want this?");
 				
 				$("#addition-answer").confirmIt({
@@ -169,7 +172,7 @@
 	<body>
 		<h1>ConfirmIt Showcase</h1>
 		<div class="section">
-			<button id="add" title="Simple Message" class="add simple">Simple</button>
+			<button id="simple" title="Simple Message" class="simple">Simple</button>
 			<pre>
 				$("button.simple").confirmIt("Do you really want this?");
 			</pre>
