@@ -179,7 +179,7 @@
 			return methods.init.apply(this, arguments);
 		} else if (typeof method === 'string'){
 			//pass in a message string instead of an object with a message property
-			$(this).confirmIt({triggered_by:'click', message:method});
+			$(this).confirmIt({message:method});
 		}else{
 			$.error( 'Method ' +  method + ' does not exist on jQuery.confirmit' );
 		}
