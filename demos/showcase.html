@@ -154,7 +154,8 @@
 				/*
 				--	The simplest usage.
 				--	By just passing in a string(that isn't a confirmit event) the string becomes the message
-				--	The default triggered_by is 'click'
+				--	Limitations: You can only specify the message, you cannot override any other options.
+				--	therefore, triggered_by='click' and live='false' will be the default setting.
 				
 				*/
 				$("#simple").click(function(){
