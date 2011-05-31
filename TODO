@@ -16,3 +16,5 @@ TODO v.1.0
 
 - Namespace the leavepage event like the others. Can we do this since it's not a jQuery event?
 
+- Clean-up logic in ConfirmIt constructor. Particularly ln#174, it's getting to be unreadable.
+
