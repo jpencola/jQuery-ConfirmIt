@@ -4,7 +4,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>jQuery-ConfirmIt: Example Showcase</title>
 		<style type="text/css">
-			/* Wrap rules that are > 3 properties long */ 
 			body {margin:35px;}
 			pre {
 				white-space:normal;
@@ -19,14 +18,26 @@
 				background-color: #ECF8F8;
 				padding: 15px;
 			}
+			.version { color: #444; }
+			.question { color: #521988; font-size: 20px; }
+			.question:before {
+				font-weight: bold;
+				text-decoration: underline;
+				content: "Q: ";
+			}
+			.answer { color: #38882B;}
+			.answer:before {
+				font-weight: bold;
+				text-decoration: underline;
+				content: "A: ";
+			}
+			span.html {
+				display: block;
+				margin: 12px;
+				text-indent: 12px;
+				font-family: "Courier New", Courier, monospace;
+			}
 			button {display: block; cursor: pointer;}
-			button.add {background-color: #9EF398;}
-			button.delete {background-color: #F37C9E;}
-			button.undo {background-color: #B878F3;}
-			button.awesome {background-color: #E795C6;}
-			button.spawner {background-color: #4CE737;}
-			input.correct {background-color: #9EF398;}
-			input.incorrect {background-color: #F37C9E;}
 			div.offspring{display: none;}
 			div#spawn-container div.offspring{
 				display: inline; 
@@ -41,113 +52,44 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				$("#simple").click(function(){
-					alert('Simple clicked!');
-				});
-				$('#destroy-simple').click(function(){
-					$("#simple").confirmIt('destroy');
+				$("#example-1").click(function(){
+					alert('Example 1 clicked!');
 				});
 				
-		/*	Addition Button: 
-		--	See how custom logic fires when confirmed
-		--	See how the class attribute is used to set a custom confirm message
-		*/
-				$('#add').mouseup(function(){
+				$("#example-2a").click(function(){
+					alert('Example 2a clicked!');
+				});
+				$("#example-2b").click(function(){
+					alert('Example 2b clicked!');
+				});
+				$("#example-2c").click(function(){
+					alert('Example 2c clicked!');
+				});
+				
+				$("#example-3").click(function(){
+					alert('Example 3 clicked!');
+				});
+				
+				$('#example-add').mouseup(function(){
 					var current_sum = $('#sum-input').attr('value');
 					$('#sum-input').attr('value', +current_sum+10);
 				});
-				$('#destroy-add').click(function(){
-					$("#add").confirmIt('destroy');
+				
+				$('#example-eventsequence').mouseup(function(e){
+					alert('Firing event sequence 1');
+				});
+				$('#example-eventsequence').mouseup(function(){
+					alert('Firing event sequence 2');
+				});
+				$('#example-eventsequence').mouseup(function(){
+					alert('Firing event sequence 3');
 				});
 				
-		/*	Answer Input: 
-		--	See how custom logic fires when confirmed
-		*/
-				$('#addition-answer').blur(function(){
-					var correct_answer = (this.value == 5);
-					if (correct_answer){
-						this.className = 'correct';
-					} else {
-						this.className = 'incorrect';
-					}
-				});
-				$('#destroy-addition').click(function(){
-					$("#addition-answer").confirmIt('destroy');
-				});
-				
-		/*	Undo button: 
-		--	Basic confirm example
-		*/
-				$('#undo').mouseup(function(){
-					alert('Your changes have been un-done.');
-				});
-				$('#destroy-undo').click(function(){
-					$("#undo").confirmIt('destroy');
-				});
-				
-		/*	Awesome button: 
-		--	See how multiple events bindings of the same type can still be used
-		--	and the ConfirmIt event will keep their sequence intact
-		*/
-				$('#awesome').mouseup(function(e){
-					alert('Your awesome fired 1.');
-				});
-				$('#awesome').mouseup(function(){
-					alert('Your awesome fired 2.');
-				});
-				$('#awesome').mouseup(function(){
-					alert('Your awesome fired 3.');
-				});
-				$('#destroy-awesome').click(function(){
-					$("#awesome").confirmIt('destroy');
-				});
-				
-		/*	Spawn element
-		--	Adds new elements to the DOM, but they still abide by the ConfirmIt rules.
-		*/
-				$('#spawner').click(function(e){
-					var spawn = document.createElement('div');
-					spawn.className = "offspring confirmit {message: Really?}";
-					spawn.innerHTML = 'clicky thing';
-					$(spawn).confirmIt({
-						triggered_by: 'click',
-						live: true
-					});
-					$('#spawn-container').html(spawn);
-					$(spawn).click(function(){alert("Hi! Says the spawn.")});
-				});
-				$('#destroy-spawner').click(function(){
-					$("div.offspring").confirmIt('destroy');
-				});
-				
-		/*	Late bound event demo
-		--	An element exists in the DOM that matches the ConfirmIt selector rule to have a confirmation, 
-		--	however, that element has no matching "triggered_by" event bound to it at the time the plugin 
-		--	is instantiated. This demo shows how even when events that match the "triggered_by" event are 
-		--	late-bound, they still must be confirmed before firing.	
-		*/
 				$("#late-undo-binder").one("click", function(){
-					$("#late-undo").mouseup(function(){
-						alert("Changes have been undone");
+					$("#example-late-undo").click(function(){
+						alert("Your changes have been un-done");
 					});
 				});
-				$('#destroy-late-undo').click(function(){
-					$("#late-undo").confirmIt('destroy');
-				});
-				
-		/*	Link demo
-		--	When dealing with Anchor (</a>) elements, ConfirmIt is best used by working with triggers such as "click" or "mousedown". 
-		--	Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
-		--	Anchor element to do so.
-		*/
-				$("a.confirmit").confirmIt();
-				$('#destroy-linkout').click(function(){
-					$("a.confirmit").confirmIt('destroy');
-				});
-				
-
-
-				
 				
 				$("div.example pre").each(function(){
 					eval(this.innerHTML);
@@ -157,80 +99,132 @@
 	</head>
 	<body>
 		<h1>jQuery ConfirmIt Showcase</h1>
+		<span class="version">version 1.0</span>
 		<div class="example">
-			<button id="simple" title="Simple Message" class="simple">Simple</button>
-			<button id="destroy-simple">Remove Confirmation</button>
+			<p class="question">What's the easiest way to get a confirmation?</p>
+			<p class="answer">
+				The simplist way is to select your element, then call confirmit.
+				This will attach to the "click" event by default and display a default confirmation message of "Are you sure?". 
+			</p>
+			<button id="example-1" title="Simple Message" class="simple">Example 1</button>
 			<pre>
-				$("#simple").confirmIt("Do you really want this?");
+				$("#example-1").confirmIt();
 			</pre>
 		</div>
 		<div class="example">
-			<button id="add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Add</button>
+			<p class="question">What if I want to customize the confirmation message, but still keep the implementation as simple as possible?</p>
+			<p class="answer">
+				If you want to stick with JavaScript, you'd use the same approach as above, this time passing in your custom confirmation message as a single argument to the confirmit plugin. 
+			</p>
+			<button id="example-2a" title="Simple Message" class="simple">Example 2a</button>
+			<pre>
+				$("#example-2a").confirmIt('Now, wait a minute!');
+			</pre>
+			<p>
+				You can also define a custom message in 1 of 2 ways on the element itself. Either in the "class" attribute in the format: 
+				<span class="html">class="confirmit {message: Are you positive???}"</span>
+			</p>
+			<button id="example-2b" title="Simple Message" class="simple confirmit {message: Are you positive???}">Example 2b</button>
+			<pre>
+				$("#example-2b").confirmIt();
+			</pre>
+			<p>
+				Or, using the HTML5 "data" attribute, in the format:
+				<span class="html">data-confirmit-message="click OK to continue..."</span>
+			</p>
+			<button id="example-2c" title="Simple Message" class="simple" data-confirmit-message="click OK to continue...">Example 2c</button>
+			<pre>
+				$("#example-2c").confirmIt();
+			</pre>
+			
+		</div>
+		<div class="example">
+			<p class="question">How can I remove a confirmation once it's been added?</p>
+			<p class="answer">
+				Easy! You just pass the 'destroy' argument to the confirmit plugin on the element that you want the confirmation removed from.
+			</p>
+			<button id="example-3" title="Simple Message" class="simple">Example 3</button>
+			<pre>
+				$("#example-3").confirmIt();
+			</pre>
+			<a id="unconfirm-example-3" title="Remove the confirmation" href="#null">Remove Confirmation</a>
+			<pre>
+				$('#unconfirm-example-3').click(function(){
+					$("#example-3").confirmIt('destroy');
+				});
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">How can I specify different events to trigger a confirmation?</p>
+			<p class="answer">
+				Just pass the optional "triggered_by" setting to the confirmit plugin and use event names that jQuery understands. The default trigger is 'click'.
+			</p>
+			<button id="example-add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Example: Custom Trigger</button>
 			<input id="sum-input" value="0" readonly="true"></input>
 			<pre>
-				$("button.confirmit").confirmIt({
-					triggered_by: 'mouseup',
-					message: "No, wait!"
+				$("#example-4").confirmIt({
+					triggered_by: 'mouseup'
 				});
 			</pre>
-			<button id="destroy-add">Remove Confirmation</button>
 		</div>
 		<div class="example">
-			Solve: 2 + 3 = <input id="addition-answer" data-confirmit-message="You get one shot, are you sure that is the answer?">
+			<p class="question">Does confirmit automatically defer all events that are bound to an element?</p>
+			<p class="answer">
+				It sure does. When a confirmation is triggered, any other bound events which would fire are deferred until the confirmation is approved.
+			</p>
+			<button id="example-eventsequence" title="Sequence Awesomeness" class="awesome">Example: Multiple Events</button>
 			<pre>
-				$("#addition-answer").confirmIt({
-					triggered_by: 'blur'
-				});
-			</pre>
-			<button id="destroy-addition">Remove Confirmation</button>
-		</div>
-		<div class="example">
-			<button id="undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
-			<pre>
-				$("button.confirmit").confirmIt({
+				$("#example-eventsequence").confirmIt({
 					triggered_by: 'mouseup',
-					message: "No, wait!"
+					message: "Continue processing?"
 				});
 			</pre>
-			<button id="destroy-undo">Remove Confirmation</button>
 		</div>
 		<div class="example">
-			<button id="awesome" title="Sequence Awesomeness" class="awesome confirmit" data-confirmit-message="Are you awesome?">Awesome</button>
-			<pre>
-				$("button.confirmit").confirmIt({
-					triggered_by: 'mouseup',
-					message: "No, wait!"
-				});
-			</pre>
-			<button id="destroy-awesome">Remove Confirmation</button>
-		</div>
-		<div class="example">
+			<p class="question">What about elements that are added in the future? ie: Ajax injected elements. Can confirmations be applied to those as well?</p>
+			<p class="answer">
+				Absolutely. You just need to add an additional option to the confirmit plugin's arguments of "live:true".
+			</p>
 			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
 			<div id="spawn-container"></div>
 			<pre>
-				$("div.offspring").confirmIt({
-					triggered_by: 'click'
+				$('#spawner').click(function(e){
+					var spawn = document.createElement('div');
+					spawn.className = "offspring confirmit {message: Really?}";
+					spawn.innerHTML = 'clicky thing';
+					$(spawn).confirmIt({
+						triggered_by: 'click',
+						live: true
+					});
+					$('#spawn-container')[0].appendChild(spawn);
+					$(spawn).click(function(){alert("Hi! Says the spawn.")});
 				});
 			</pre>
-			<button id="destroy-spawner">Remove Confirmation</button>
 		</div>
 		<div class="example">
-			<button id="late-undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
-			<button id="late-undo-binder" title="Bind event to Undo" class="">Late Bind to Undo</button>
+			<p class="question">Does it matter what order I add a confirmation to an element vs. the order I bind events to that same element?</p>
+			<p class="answer">
+				Nope. "Late-binding" is supported.
+			</p>
+			<button id="example-late-undo" title="Undo Things" class="undo confirmit">Undo</button>
+			<button id="late-undo-binder" title="Bind event to Undo" class="">Example: Bind an event to 'undo' button</button>
 			<pre>
-				$("button.confirmit").confirmIt({
-					triggered_by: 'mouseup',
-					message: "No, wait!"
+				$("#example-late-undo").confirmIt({
+					message: "Are you sure you want to undo your changes?"
 				});
 			</pre>
-			<button id="destroy-late-undo">Remove Confirmation</button>
 		</div>
 		<div class="example">
-			<a class="confirmit" title="Visit Duck-Duck-Go" data-confirmit-message="Are you sure you want to leave this site?" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
+			<p class="question">How can I prevent anchor elements from linking off to a URL until a confirmation is approved?</p>
+			<p class="answer">
+				Same as usual. However, ConfirmIt is best used by working with triggers such as "click" or "mousedown" in this case. 
+				Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
+				Anchor element to do so.
+			</p>
+			<a id="example-outboundlink" class="confirmit" title="Visit Duck-Duck-Go" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
 			<pre>
-				$("a.confirmit").confirmIt();
+				$("#example-outboundlink").confirmIt("Are you sure you want to leave this site?");
 			</pre>
-			<button id="destroy-linkout">Remove Confirmation</button>
 		</div>
 	</body>
 </html>

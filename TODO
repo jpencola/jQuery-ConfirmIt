@@ -9,10 +9,6 @@ BUGS:
 
 TASKS:
 
-	- Flesh out the README with "recipe" style examples
-
-	- Clean up the "showcase" page. 
-  
 	- Integrate LeavePage Form example to showcase.
 
 	- Clean-up logic in ConfirmIt constructor. Particularly ln#174, it's getting to be unreadable.
