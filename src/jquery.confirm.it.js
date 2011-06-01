@@ -107,7 +107,6 @@
 			});
 		},
 		initleave: function(options){
-				//console.log('initLeave');
 				var element = $(this);
 				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
 				if (is_already_initialized) return;
@@ -115,12 +114,10 @@
 				element.data('altered',false);
 				//the actual leave page event
 				function confirmExit(event) {  
-					//if the form has been not been altered
-					console.log("confirmExit() element.data('altered') = " + element.data('altered'));
-					
+					//if the form has been not been altered					
 					if (element.data('altered') == false)
 					{  
-					//cancel the event and leave the page
+						//cancel the event and leave the page
 						event.cancelBubble = true;  
 					}  
 					else  
@@ -141,15 +138,12 @@
 				});
 				element.find(":submit").click(function(){
 					element.data('altered',false);
-				});
-		
+				});		
 	            element.data('data-confirmit-unload', true);
 	            element.data('data-confirmit-ready', true);
 			return this;
 		},
 		destroy: function(){
-			//console.log("destroy");
-		
 			return this.each(function(){
 				var element = $(this);
 				if(element.data('data-confirmit-unload'))
@@ -166,22 +160,12 @@
 	};
 	
 	$.fn.confirmIt = function(method){
-		//console.log('confirmIt');
-		if (methods[method]){
-			console.log("calling methods[method].apply");
+		if (methods[method])
 			return methods[method].apply(this, Array.prototype.slice.call( arguments, 1 ));
-		} else if (typeof method === 'object' || !method){			
-			if(!!method && !!method.triggered_by && method.triggered_by == 'unload'){					
-				//console.log('enter initleave');
-				return methods.initleave.apply(this, arguments);
-			}							
-			//console.log('enter init');
-			return methods.init.apply(this, arguments);
-		} else if (typeof method === 'string'){
-			//pass in a message string instead of an object with a message property
-			$(this).confirmIt({message:method});
-		}else{
-			$.error( 'Method ' +  method + ' does not exist on jQuery.confirmit' );
-		}
+		if (typeof method === 'object' && method.triggered_by == 'unload')			
+			return methods.initleave.apply(this, arguments);
+		if (typeof method === 'string')
+			method ={message:method};
+		return methods.init.apply(this, arguments);
 	};
 })(jQuery);
