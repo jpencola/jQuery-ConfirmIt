@@ -13,7 +13,7 @@
 				line-height: 28px;
 				text-indent: 12px;
 			}
-			div.section {
+			div.example {
 				margin:25px 0; 
 				border-bottom: solid 1px #c1c1c1;
 				background-color: #ECF8F8;
@@ -41,11 +41,17 @@
 		
 		<script type="text/javascript">
 			$(function() {
+				$("#simple").click(function(){
+					alert('Simple clicked!');
+				});
+				$('#destroy-simple').click(function(){
+					$("#simple").confirmIt('destroy');
+				});
 				
-				/*	Addition Button: 
-				--	See how custom logic fires when confirmed
-				--	See how the class attribute is used to set a custom confirm message
-				*/
+		/*	Addition Button: 
+		--	See how custom logic fires when confirmed
+		--	See how the class attribute is used to set a custom confirm message
+		*/
 				$('#add').mouseup(function(){
 					var current_sum = $('#sum-input').attr('value');
 					$('#sum-input').attr('value', +current_sum+10);
@@ -54,9 +60,9 @@
 					$("#add").confirmIt('destroy');
 				});
 				
-				/*	Answer Input: 
-				--	See how custom logic fires when confirmed
-				*/
+		/*	Answer Input: 
+		--	See how custom logic fires when confirmed
+		*/
 				$('#addition-answer').blur(function(){
 					var correct_answer = (this.value == 5);
 					if (correct_answer){
@@ -69,9 +75,9 @@
 					$("#addition-answer").confirmIt('destroy');
 				});
 				
-				/*	Undo button: 
-				--	Basic confirm example
-				*/
+		/*	Undo button: 
+		--	Basic confirm example
+		*/
 				$('#undo').mouseup(function(){
 					alert('Your changes have been un-done.');
 				});
@@ -79,10 +85,10 @@
 					$("#undo").confirmIt('destroy');
 				});
 				
-				/*	Awesome button: 
-				--	See how multiple events bindings of the same type can still be used
-				--	and the ConfirmIt event will keep their sequence intact
-				*/
+		/*	Awesome button: 
+		--	See how multiple events bindings of the same type can still be used
+		--	and the ConfirmIt event will keep their sequence intact
+		*/
 				$('#awesome').mouseup(function(e){
 					alert('Your awesome fired 1.');
 				});
@@ -96,9 +102,9 @@
 					$("#awesome").confirmIt('destroy');
 				});
 				
-				/*	Spawn element
-				--	Adds new elements to the DOM, but they still abide by the ConfirmIt rules.
-				*/
+		/*	Spawn element
+		--	Adds new elements to the DOM, but they still abide by the ConfirmIt rules.
+		*/
 				$('#spawner').click(function(e){
 					var spawn = document.createElement('div');
 					spawn.className = "offspring confirmit {message: Really?}";
@@ -114,12 +120,12 @@
 					$("div.offspring").confirmIt('destroy');
 				});
 				
-				/*	Late bound event demo
-				--	An element exists in the DOM that matches the ConfirmIt selector rule to have a confirmation, 
-				--	however, that element has no matching "triggered_by" event bound to it at the time the plugin 
-				--	is instantiated. This demo shows how even when events that match the "triggered_by" event are 
-				--	late-bound, they still must be confirmed before firing.	
-				*/
+		/*	Late bound event demo
+		--	An element exists in the DOM that matches the ConfirmIt selector rule to have a confirmation, 
+		--	however, that element has no matching "triggered_by" event bound to it at the time the plugin 
+		--	is instantiated. This demo shows how even when events that match the "triggered_by" event are 
+		--	late-bound, they still must be confirmed before firing.	
+		*/
 				$("#late-undo-binder").one("click", function(){
 					$("#late-undo").mouseup(function(){
 						alert("Changes have been undone");
@@ -129,56 +135,36 @@
 					$("#late-undo").confirmIt('destroy');
 				});
 				
-				/*	Link demo
-				--	When dealing with Anchor (</a>) elements, ConfirmIt is best used by working with triggers such as "click" or "mousedown". 
-				--	Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
-				--	Anchor element to do so.
-				*/
+		/*	Link demo
+		--	When dealing with Anchor (</a>) elements, ConfirmIt is best used by working with triggers such as "click" or "mousedown". 
+		--	Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
+		--	Anchor element to do so.
+		*/
 				$("a.confirmit").confirmIt();
 				$('#destroy-linkout').click(function(){
 					$("a.confirmit").confirmIt('destroy');
 				});
 				
-				/*	Begin ConfirmIt instantiation
-					------------------------------------------------
-				--	In this example I'm passing it the optional "triggered_by" specifier,
-				--	which tells the confirm prompt to intercept that event on the elements matched by the selector.	
-				--	I'm also passing the optional "message" specifier,
-				--	which tells the confirm prompt what the default confirmation message should be if the plugin can't find one.	
-				*/
-				$("button.confirmit").confirmIt({
-					triggered_by: 'mouseup',
-					message: "No, wait!"
-				});
+
+
 				
-				/*
-				--	The simplest usage.
-				--	By just passing in a string(that isn't a confirmit event) the string becomes the message
-				--	Limitations: You can only specify the message, you cannot override any other options.
-				--	therefore, triggered_by='click' and live='false' will be the default setting.
 				
-				*/
-				$("#simple").click(function(){
-					alert('Simple button event fired');
+				$("div.example pre").each(function(){
+					eval(this.innerHTML);
 				});
-				$("button.simple").confirmIt("Do you really want this?");
-				
-				$("#addition-answer").confirmIt({
-					triggered_by: 'blur'
-				});
-				/* / End ConfirmIt instantiation */
 			});
 		</script>
 	</head>
 	<body>
-		<h1>ConfirmIt Showcase</h1>
-		<div class="section">
+		<h1>jQuery ConfirmIt Showcase</h1>
+		<div class="example">
 			<button id="simple" title="Simple Message" class="simple">Simple</button>
+			<button id="destroy-simple">Remove Confirmation</button>
 			<pre>
-				$("button.simple").confirmIt("Do you really want this?");
+				$("#simple").confirmIt("Do you really want this?");
 			</pre>
 		</div>
-		<div class="section">
+		<div class="example">
 			<button id="add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Add</button>
 			<input id="sum-input" value="0" readonly="true"></input>
 			<pre>
@@ -189,7 +175,7 @@
 			</pre>
 			<button id="destroy-add">Remove Confirmation</button>
 		</div>
-		<div class="section">
+		<div class="example">
 			Solve: 2 + 3 = <input id="addition-answer" data-confirmit-message="You get one shot, are you sure that is the answer?">
 			<pre>
 				$("#addition-answer").confirmIt({
@@ -198,7 +184,7 @@
 			</pre>
 			<button id="destroy-addition">Remove Confirmation</button>
 		</div>
-		<div class="section">
+		<div class="example">
 			<button id="undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
 			<pre>
 				$("button.confirmit").confirmIt({
@@ -208,7 +194,7 @@
 			</pre>
 			<button id="destroy-undo">Remove Confirmation</button>
 		</div>
-		<div class="section">
+		<div class="example">
 			<button id="awesome" title="Sequence Awesomeness" class="awesome confirmit" data-confirmit-message="Are you awesome?">Awesome</button>
 			<pre>
 				$("button.confirmit").confirmIt({
@@ -218,7 +204,7 @@
 			</pre>
 			<button id="destroy-awesome">Remove Confirmation</button>
 		</div>
-		<div class="section">
+		<div class="example">
 			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
 			<div id="spawn-container"></div>
 			<pre>
@@ -228,7 +214,7 @@
 			</pre>
 			<button id="destroy-spawner">Remove Confirmation</button>
 		</div>
-		<div class="section">
+		<div class="example">
 			<button id="late-undo" title="Undo Things" class="undo confirmit" data-confirmit-message="Are you sure you want to undo your changes?">Undo</button>
 			<button id="late-undo-binder" title="Bind event to Undo" class="">Late Bind to Undo</button>
 			<pre>
@@ -239,7 +225,7 @@
 			</pre>
 			<button id="destroy-late-undo">Remove Confirmation</button>
 		</div>
-		<div class="section">
+		<div class="example">
 			<a class="confirmit" title="Visit Duck-Duck-Go" data-confirmit-message="Are you sure you want to leave this site?" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
 			<pre>
 				$("a.confirmit").confirmIt();
