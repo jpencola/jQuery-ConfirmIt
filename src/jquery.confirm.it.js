@@ -82,7 +82,7 @@
 				function getConfirmMessage(element){
 					var confirm_message, classname = element.attr('class');
 					confirm_message = element.attr('data-confirmit-message');
-					if (!confirm_message) confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]; // good candidate for a regexp
+					if (!confirm_message) try {confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]} catch(ex){}; // good candidate for a regexp
 					if (!confirm_message) confirm_message = settings.message;
 					return confirm_message;
 				};

@@ -3,8 +3,6 @@ TODO v.1.0
   
 BUGS:
 
-	- Fix parse error when elements have no "class" attribute defined.
-
 	- Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
 TASKS:
