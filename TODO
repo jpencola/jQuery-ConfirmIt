@@ -1,20 +1,24 @@
 TODO v.1.0
 ----------
-
-*Un-official TODO list*
   
-- Check for matched selector when elements are added to the DOM (ie: spawner demo)
+BUGS:
 
-- Flesh out the README with "recipe" style examples
+	- Fix parse error when elements have no "class" attribute defined.
 
-- Clean up the "showcase" page. 
+	- Check for matched selector when elements are added to the DOM (ie: spawner demo)
 
-- Add simple rules syntax for advanced (optional) confirmation determination.  
-  ** Consider how a rules engine may work to accomplish confirmation invocation for larger groupings of logic. For example the forms demo. 
+TASKS:
+
+	- Flesh out the README with "recipe" style examples
+
+	- Clean up the "showcase" page. 
   
-- Add LeavePage example to showcase
+	- Integrate LeavePage Form example to showcase.
 
-- Namespace the leavepage event like the others. Can we do this since it's not a jQuery event?
+	- Clean-up logic in ConfirmIt constructor. Particularly ln#174, it's getting to be unreadable.
 
-- Clean-up logic in ConfirmIt constructor. Particularly ln#174, it's getting to be unreadable.
+ENHANCEMENTS:
 
+	- Namespace the leavepage event like the others. Can we do this since it's not a jQuery event?
+	
+	- Think about rules-style syntax support.
