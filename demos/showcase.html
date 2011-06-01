@@ -116,7 +116,7 @@
 			<p class="answer">
 				If you want to stick with JavaScript, you'd use the same approach as above, this time passing in your custom confirmation message as a single argument to the confirmit plugin. 
 			</p>
-			<button id="example-2a" title="Simple Message" class="simple">Example 2a</button>
+			<button id="example-2a" title="Simple Message">Example 2a</button>
 			<pre>
 				$("#example-2a").confirmIt('Now, wait a minute!');
 			</pre>
@@ -124,7 +124,7 @@
 				You can also define a custom message in 1 of 2 ways on the element itself. Either in the "class" attribute in the format: 
 				<span class="html">class="confirmit {message: Are you positive???}"</span>
 			</p>
-			<button id="example-2b" title="Simple Message" class="simple confirmit {message: Are you positive???}">Example 2b</button>
+			<button id="example-2b" title="Simple Message" class="confirmit {message: Are you positive???}">Example 2b</button>
 			<pre>
 				$("#example-2b").confirmIt();
 			</pre>
@@ -132,7 +132,7 @@
 				Or, using the HTML5 "data" attribute, in the format:
 				<span class="html">data-confirmit-message="click OK to continue..."</span>
 			</p>
-			<button id="example-2c" title="Simple Message" class="simple" data-confirmit-message="click OK to continue...">Example 2c</button>
+			<button id="example-2c" title="Simple Message" data-confirmit-message="click OK to continue...">Example 2c</button>
 			<pre>
 				$("#example-2c").confirmIt();
 			</pre>
@@ -143,7 +143,7 @@
 			<p class="answer">
 				Easy! You just pass the 'destroy' argument to the confirmit plugin on the element that you want the confirmation removed from.
 			</p>
-			<button id="example-3" title="Simple Message" class="simple">Example 3</button>
+			<button id="example-3" title="Simple Message">Example 3</button>
 			<pre>
 				$("#example-3").confirmIt();
 			</pre>
@@ -159,10 +159,10 @@
 			<p class="answer">
 				Just pass the optional "triggered_by" setting to the confirmit plugin and use event names that jQuery understands. The default trigger is 'click'.
 			</p>
-			<button id="example-add" title="Add Things" class="add confirmit {message: Are you sure you want to add 10 more to this?}">Example: Custom Trigger</button>
+			<button id="example-add" title="Add Things" class="confirmit {message: Are you sure you want to add 10 more to this?}">Example: Custom Trigger</button>
 			<input id="sum-input" value="0" readonly="true"></input>
 			<pre>
-				$("#example-4").confirmIt({
+				$("#example-add").confirmIt({
 					triggered_by: 'mouseup'
 				});
 			</pre>
@@ -172,7 +172,7 @@
 			<p class="answer">
 				It sure does. When a confirmation is triggered, any other bound events which would fire are deferred until the confirmation is approved.
 			</p>
-			<button id="example-eventsequence" title="Sequence Awesomeness" class="awesome">Example: Multiple Events</button>
+			<button id="example-eventsequence" title="Sequence Awesomeness">Example: Multiple Events</button>
 			<pre>
 				$("#example-eventsequence").confirmIt({
 					triggered_by: 'mouseup',
@@ -206,8 +206,8 @@
 			<p class="answer">
 				Nope. "Late-binding" is supported.
 			</p>
-			<button id="example-late-undo" title="Undo Things" class="undo confirmit">Undo</button>
-			<button id="late-undo-binder" title="Bind event to Undo" class="">Example: Bind an event to 'undo' button</button>
+			<button id="example-late-undo" title="Undo Things">Undo</button>
+			<button id="late-undo-binder" title="Bind event to Undo">Example: Bind an event to 'undo' button</button>
 			<pre>
 				$("#example-late-undo").confirmIt({
 					message: "Are you sure you want to undo your changes?"
@@ -221,7 +221,7 @@
 				Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
 				Anchor element to do so.
 			</p>
-			<a id="example-outboundlink" class="confirmit" title="Visit Duck-Duck-Go" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
+			<a id="example-outboundlink" title="Visit Duck-Duck-Go" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
 			<pre>
 				$("#example-outboundlink").confirmIt("Are you sure you want to leave this site?");
 			</pre>
