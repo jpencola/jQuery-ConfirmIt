@@ -48,11 +48,11 @@
 		            return;
 				}
 				
-				var events_data = element.data('events');
-				var hasEvents = !!events_data;
-				var hasTriggerEvent = (function(){try{return !!events_data[defaults.triggered_by]}catch(ex){return false}})();
+				var events = element.data('events');
+				var hasEvents = !!events;
+				var hasTriggerEvent = (function(){try{return !!events[defaults.triggered_by]}catch(ex){return false}})();
 				if (hasEvents && hasTriggerEvent){
-					var trigger_events = events_data[defaults.triggered_by];
+					var trigger_events = events[defaults.triggered_by];
 					var event_memory = [];
 					for (var event in trigger_events){
 						rememberEventHandlers(element, event_memory);
@@ -66,7 +66,6 @@
 				
 				//	stashes existing trigger events for re-use later
 				function rememberEventHandlers(element, event_memory){
-					var events = element.data('events');
 					for (var event in events){
 						for (var i=0, count=events[event].length; i<count; i++){
 							var event_object = events[event][i];
