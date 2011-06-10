@@ -41,9 +41,9 @@
 						element.data('data-confirmit-altered',false);
 					});
 					
-		            element.data('data-confirmit-triggered-by-unload', true);
-		            element.data('data-confirmit-ready', true);
-		            return;
+					element.data('data-confirmit-triggered-by-unload', true);
+					element.data('data-confirmit-ready', true);
+					return;
 				}
 				
 				var events = element.data('events');
@@ -150,7 +150,7 @@
 					element.unbind('.confirmit');
 					element.removeData('data-confirmit-deferred-callbacks');
 				}
-	            element.removeData('data-confirmit-ready');
+				element.removeData('data-confirmit-ready');
 			});
 		}
 	};
