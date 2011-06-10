@@ -33,14 +33,14 @@
 					bindFormConfirmHandler(element);
 					
 					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
-						element.data('altered',true);
+						element.data('data-confirmit-altered',true);
 					});
 					
 					element.find("textarea, :text").keydown(function(){
-						element.data('altered',true);
+						element.data('data-confirmit-altered',true);
 					});
 					element.find(":submit").click(function(){
-						element.data('altered',false);
+						element.data('data-confirmit-altered',false);
 					});
 					
 		            element.data('data-confirmit-triggered-by-unload', true);
@@ -112,7 +112,7 @@
 				function bindFormConfirmHandler(element){
 					var confirmIfChanged = function(event){  
 						//	if the form has been not been altered
-						if (!element.data('altered')){  
+						if (!element.data('data-confirmit-altered')){  
 							//	cancel the event and leave the page
 							event.cancelBubble = true;  
 						} else { 
@@ -147,7 +147,7 @@
 				var element = $(this);
 				if (element.data('data-confirmit-triggered-by-unload')){
 					element.removeData('data-confirmit-triggered-by-unload');
-					element.removeData('altered');
+					element.removeData('data-confirmit-altered');
 					window.onbeforeunload = null;
 				} else {
 					element.unbind('.confirmit');
