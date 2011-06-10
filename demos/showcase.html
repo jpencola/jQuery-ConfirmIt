@@ -55,7 +55,7 @@
 			}
 		</style>
 		<script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
-		<script src="../src/jquery.confirm.it.js" type="text/javascript"></script>
+		<script src="../src/jquery.confirm.it.min.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 			$(function() {
@@ -101,7 +101,6 @@
 				$("div.example pre").each(function(){
 					eval(this.innerHTML);
 				});
-				
 				
 				$("#myForm").confirmIt({triggered_by:'unload', message:'This is a ConfirmIt leave page warning.'});
 			});
@@ -170,7 +169,7 @@
 				Just pass the optional "triggered_by" setting to the confirmit plugin and use event names that jQuery understands. The default trigger is 'click'.
 			</p>
 			<button id="example-add" title="Add Things" class="confirmit {message: Are you sure you want to add 10 more to this?}">Example: Custom Trigger</button>
-			<input id="sum-input" value="0" readonly="true"></input>
+			<input id="sum-input" value="0" readonly="readonly">
 			<pre>
 				$("#example-add").confirmIt({
 					triggered_by: 'mouseup'
