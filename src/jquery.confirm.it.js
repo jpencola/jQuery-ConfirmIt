@@ -27,6 +27,29 @@
 				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
 				if (is_already_initialized) return;
 				
+				//	if the trigger is "beforeunload" then we assume that the user is 
+				//	trying to confirm a form that hasn't been submitted with changes
+				if (defaults.triggered_by === 'unload'){		
+					element.data('altered',false);
+					
+					bindFormConfirmHandler(element);
+					
+					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
+						element.data('altered',true);
+					});
+					
+					element.find("textarea, :text").keydown(function(){
+						element.data('altered',true);
+					});
+					element.find(":submit").click(function(){
+						element.data('altered',false);
+					});
+					
+		            element.data('data-confirmit-unload', true);
+		            element.data('data-confirmit-ready', true);
+		            return;
+				}
+				
 				var events_data = element.data('events');
 				var hasEvents = !!events_data;
 				var hasTriggerEvent = (function(){try{return !!events_data[defaults.triggered_by]}catch(ex){return false}})();
@@ -87,6 +110,21 @@
 					return confirm_message;
 				};
 				
+				//	binds the confirm leave handler on the window object
+				function bindFormConfirmHandler(element){
+					var confirmIfChanged = function(event){  
+						//	if the form has been not been altered
+						if (!element.data('altered')){  
+							//	cancel the event and leave the page
+							event.cancelBubble = true;  
+						} else { 
+							//	else pop up the confirm message
+							return defaults.message;  
+						}
+					};
+					window.onbeforeunload = confirmIfChanged;
+				};
+				
 				//	binds the confirm handler to the specified trigger event
 				function bindConfirmHandler(element){
 					element.data('data-confirmit-ready', true);
@@ -105,43 +143,6 @@
 					}
 				};
 			});
-		},
-		initleave: function(options){
-				var element = $(this);
-				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
-				if (is_already_initialized) return;
-				
-				element.data('altered',false);
-				//the actual leave page event
-				function confirmExit(event) {  
-					//if the form has been not been altered					
-					if (element.data('altered') == false)
-					{  
-						//cancel the event and leave the page
-						event.cancelBubble = true;  
-					}  
-					else  
-					{ 
-						//else pop up the confirm message
-						return options.message;  
-					}
-				}
-				
-				window.onbeforeunload = confirmExit; 
-				
-				element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
-					element.data('altered',true);
-				});
-				
-				element.find("textarea, :text").keydown(function(){
-					element.data('altered',true);
-				});
-				element.find(":submit").click(function(){
-					element.data('altered',false);
-				});		
-	            element.data('data-confirmit-unload', true);
-	            element.data('data-confirmit-ready', true);
-			return this;
 		},
 		destroy: function(){
 			return this.each(function(){
@@ -162,8 +163,6 @@
 	$.fn.confirmIt = function(method){
 		if (methods[method])
 			return methods[method].apply(this, Array.prototype.slice.call( arguments, 1 ));
-		if (typeof method === 'object' && method.triggered_by == 'unload')			
-			return methods.initleave.apply(this, arguments);
 		if (typeof method === 'string')
 			method ={message:method};
 		return methods.init.apply(this, arguments);
