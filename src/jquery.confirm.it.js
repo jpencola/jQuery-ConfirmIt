@@ -10,6 +10,10 @@
 			//	bind the confirm event so it is the first one in the bubbling phase
 			//	re-bind all the other events
 			return this.each(function(){
+				var element = $(this);
+				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
+				if (is_already_initialized) return;
+				
 				var defaults = {
 					triggered_by: "click",
 					message: "Are you sure?",
@@ -23,12 +27,8 @@
 					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
 				}
 				
-				var element = $(this);
-				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
-				if (is_already_initialized) return;
-				
 				//	if the trigger is "beforeunload" then we assume that the user is 
-				//	trying to confirm a form that hasn't been submitted with changes
+				//	trying to confirm a form that may contain un-submitted changes
 				if (defaults.triggered_by === 'unload'){		
 					bindFormConfirmHandler(element);
 					
