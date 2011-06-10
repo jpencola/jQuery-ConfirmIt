@@ -306,6 +306,12 @@
 			<pre>
 				$("#myForm").confirmIt({triggered_by:'unload', message:'This is a ConfirmIt leave page warning.'});
 			</pre>
+			<a id="unconfirm-form" title="Remove the confirmation" href="#null">Remove Confirmation</a>
+			<pre>
+				$('#unconfirm-form').click(function(){
+					$("#myForm").confirmIt('destroy');
+				});
+			</pre>
 		</div>
 	</body>
 </html>

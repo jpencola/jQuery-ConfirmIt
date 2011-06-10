@@ -43,7 +43,7 @@
 						element.data('altered',false);
 					});
 					
-		            element.data('data-confirmit-unload', true);
+		            element.data('data-confirmit-triggered-by-unload', true);
 		            element.data('data-confirmit-ready', true);
 		            return;
 				}
@@ -145,15 +145,15 @@
 		destroy: function(){
 			return this.each(function(){
 				var element = $(this);
-				if(element.data('data-confirmit-unload'))
-				{
-					element.removeData('data-confirmit-unload');
+				if (element.data('data-confirmit-triggered-by-unload')){
+					element.removeData('data-confirmit-triggered-by-unload');
 					element.removeData('altered');
 					window.onbeforeunload = null;
+				} else {
+					element.unbind('.confirmit');
+					element.removeData('data-confirmit-deferred-callbacks');
 				}
-	            element.unbind('.confirmit');
 	            element.removeData('data-confirmit-ready');
-	            element.removeData('data-confirmit-deferred-callbacks');
 			});
 		}
 	};
