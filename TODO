@@ -1,11 +1,10 @@
 TODO v.1.0
 ----------
-  
 
 TASKS:
 
-	- Integrate LeavePage Form example to showcase.
 	- cross browser testing
+	- in destroy(), in the condition of the "leave-confirm", we should unbind all the form element events that check for changes. 
 
 FUTURE ENHANCEMENTS:
 	

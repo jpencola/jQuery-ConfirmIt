@@ -1,4 +1,3 @@
-
 (function($){
 	var methods = {
 		init: function(options){
@@ -35,7 +34,6 @@
 					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
 						element.data('data-confirmit-altered',true);
 					});
-					
 					element.find("textarea, :text").keydown(function(){
 						element.data('data-confirmit-altered',true);
 					});
