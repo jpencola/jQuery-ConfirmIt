@@ -56,9 +56,9 @@
 					var event_memory = [];
 					for (var event in trigger_events){
 						rememberEventHandlers(element, event_memory);
-						removeEventHandlers(element);
+						detachEventHandlers(element);
 						bindConfirmHandler(element);
-						restoreEventHandlers(element);
+						reattachEventHandlers(element);
 					}
 				} else {
 					bindConfirmHandler(element);
@@ -82,12 +82,12 @@
 				};
 				
 				//	un-binds trigger events from the element
-				function removeEventHandlers(element){
+				function detachEventHandlers(element){
 					element.unbind(defaults.triggered_by);
 				};
 				
 				//	re-binds pre-existing trigger events to the element
-				function restoreEventHandlers(element){
+				function reattachEventHandlers(element){
 					var events = element.data('data-confirmit-deferred-callbacks');
 					for (var event in events){
 						var event_type = events[event].type;
