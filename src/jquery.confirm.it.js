@@ -30,8 +30,6 @@
 				//	if the trigger is "beforeunload" then we assume that the user is 
 				//	trying to confirm a form that hasn't been submitted with changes
 				if (defaults.triggered_by === 'unload'){		
-					element.data('altered',false);
-					
 					bindFormConfirmHandler(element);
 					
 					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
