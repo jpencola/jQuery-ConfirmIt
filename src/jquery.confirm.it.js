@@ -10,16 +10,16 @@
 			//	bind the confirm event so it is the first one in the bubbling phase
 			//	re-bind all the other events
 			return this.each(function(){
-				var settings = {
+				var defaults = {
 					triggered_by: "click",
 					message: "Are you sure?",
 					live: false
 				};
-				//	apply any overrides to the settings
-				if (options) $.extend(settings, options);
+				//	apply any overrides to the defaults
+				if (options) $.extend(defaults, options);
 				
 				//	listen for future (live) elements added to the DOM 
-				if (settings.live){
+				if (defaults.live){
 					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
 				}
 				
@@ -29,9 +29,9 @@
 				
 				var events_data = element.data('events');
 				var hasEvents = !!events_data;
-				var hasTriggerEvent = (function(){try{return !!events_data[settings.triggered_by]}catch(ex){return false}})();
+				var hasTriggerEvent = (function(){try{return !!events_data[defaults.triggered_by]}catch(ex){return false}})();
 				if (hasEvents && hasTriggerEvent){
-					var trigger_events = events_data[settings.triggered_by];
+					var trigger_events = events_data[defaults.triggered_by];
 					var event_memory = [];
 					for (var event in trigger_events){
 						rememberEventHandlers(element, event_memory);
@@ -49,7 +49,7 @@
 					for (var event in events){
 						for (var i=0, count=events[event].length; i<count; i++){
 							var event_object = events[event][i];
-							if (event_object.type == settings.triggered_by){
+							if (event_object.type == defaults.triggered_by){
 								event_memory.push({
 									type: event_object.type,
 									handler: event_object.handler
@@ -62,7 +62,7 @@
 				
 				//	un-binds trigger events from the element
 				function removeEventHandlers(element){
-					element.unbind(settings.triggered_by);
+					element.unbind(defaults.triggered_by);
 				};
 				
 				//	re-binds pre-existing trigger events to the element
@@ -78,19 +78,19 @@
 				//	Extracts the confirmation message from the element 
 				//	HTML5 data attribute is prefferred...
 				//	then the class attribute...
-				//	finally, fall back on the default message in settings
+				//	finally, fall back on the default message in defaults
 				function getConfirmMessage(element){
 					var confirm_message, classname = element.attr('class');
 					confirm_message = element.attr('data-confirmit-message');
 					if (!confirm_message) try {confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]} catch(ex){}; // good candidate for a regexp
-					if (!confirm_message) confirm_message = settings.message;
+					if (!confirm_message) confirm_message = defaults.message;
 					return confirm_message;
 				};
 				
 				//	binds the confirm handler to the specified trigger event
 				function bindConfirmHandler(element){
 					element.data('data-confirmit-ready', true);
-					element.bind(settings.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
+					element.bind(defaults.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
 				};
 				
 				//	Display a confirm dialog
