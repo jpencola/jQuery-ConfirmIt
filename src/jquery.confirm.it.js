@@ -1,3 +1,37 @@
+var ConfirmIt = (function(){
+	var instances = [];
+	var create = function(options){
+		var _instance = (function(){
+			var defaults  = {
+				triggered_by: "click",
+				message: "Are you sure?",
+				live: false
+			};
+			
+			function init(){
+			}
+			
+			function destroy(){
+			}
+			
+			init();
+			
+			return {
+				defaults: defaults,
+				options: options,
+				init: init,
+				destroy: destroy
+			}
+		})();
+		instances.push(_instance);
+		return _instance;	
+	};
+	return { 
+		instances: instances,
+		create: create 
+	}
+})();
+			
 (function($){
 	var methods = {
 		init: function(options){
