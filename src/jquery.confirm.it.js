@@ -2,13 +2,18 @@ var ConfirmIt = (function(){
 	var instances = [];
 	var create = function(options){
 		var _instance = (function(){
+			var element = $(this);
 			var defaults  = {
 				triggered_by: "click",
 				message: "Are you sure?",
 				live: false
 			};
+			var settings = $.extend({}, settings, defaults);
 			
 			function init(){
+				//	apply any overrides to the defaults
+				$.extend(settings, options);
+				console.log(defaults, settings)
 			}
 			
 			function destroy(){
