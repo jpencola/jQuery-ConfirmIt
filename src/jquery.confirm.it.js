@@ -3,19 +3,19 @@ var ConfirmIt = (function(){
 	var create = function(options){
 		var element = $(this);
 		var _instance = (function(){
-			var is_already_initialized = !!(element.data('data-confirmit-ready')); 
-			if (is_already_initialized) return;
+			var already_exists = !!(element.data('data-confirmit-ready')); 
+			if (already_exists) return;
 			
 			var defaults  = {
 				triggered_by: "click",
 				message: "Are you sure?",
 				live: false
 			};
+			
 			var properties = $.extend({}, properties, defaults);
-
+			$.extend(properties, options);
+			
 			function init(){
-				$.extend(properties, options);
-				
 				//	store an index of the new ConfirmIt object for lookups later
 				element.data('data-confirmit-index', ConfirmIt.instances.length);
 				
