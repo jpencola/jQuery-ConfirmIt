@@ -3,8 +3,8 @@ var ConfirmIt = (function(){
 	var create = function(options){
 		var element = $(this);
 		var _instance = (function(){
-			//var is_already_initialized = !!(element.data('data-confirmit-ready')); 
-			//if (is_already_initialized) return;
+			var is_already_initialized = !!(element.data('data-confirmit-ready')); 
+			if (is_already_initialized) return;
 			
 			var defaults  = {
 				triggered_by: "click",
@@ -12,10 +12,12 @@ var ConfirmIt = (function(){
 				live: false
 			};
 			var properties = $.extend({}, properties, defaults);
-			properties['target'] = element;
-			
+
 			function init(){
 				$.extend(properties, options);
+				
+				//	store an index of the new ConfirmIt object for lookups later
+				element.data('data-confirmit-index', ConfirmIt.instances.length);
 				
 				//	listen for future (live) elements added to the DOM 
 				if (properties.live){
@@ -140,6 +142,7 @@ var ConfirmIt = (function(){
 			return {
 				defaults: defaults,
 				options: options,
+				properties: properties,
 				init: init,
 				destroy: destroy
 			}
@@ -158,8 +161,10 @@ var ConfirmIt = (function(){
 			element.unbind('.confirmit');
 			element.removeData('data-confirmit-deferred-callbacks');
 		}
+		var index = element.data('data-confirmit-index');
+		ConfirmIt.instances[index] = null;
 		element.removeData('data-confirmit-ready');
-		console.log(ConfirmIt.instances.properties);
+		element.removeData('data-confirmit-index');
 	};
 	
 	return { 
