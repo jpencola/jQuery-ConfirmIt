@@ -11,19 +11,20 @@ var ConfirmIt = (function(){
 				message: "Are you sure?",
 				live: false
 			};
-			var settings = $.extend({}, settings, defaults);
+			var properties = $.extend({}, properties, defaults);
+			properties['target'] = element;
 			
 			function init(){
-				$.extend(settings, options);
+				$.extend(properties, options);
 				
 				//	listen for future (live) elements added to the DOM 
-				if (settings.live){
+				if (properties.live){
 					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
 				}
 				
 				//	if the trigger is "onbeforeunload" then we assume that the implementor wants 
 				//	to confirm a form that may contain client-side changes.
-				if (settings.triggered_by === 'unload'){		
+				if (properties.triggered_by === 'unload'){		
 					bindFormConfirmHandler(element);
 					
 					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
@@ -43,9 +44,9 @@ var ConfirmIt = (function(){
 				
 				var events = element.data('events');
 				var hasEvents = !!events;
-				var hasTriggerEvent = (function(){try{return !!events[settings.triggered_by]}catch(ex){return false}})();
+				var hasTriggerEvent = (function(){try{return !!events[properties.triggered_by]}catch(ex){return false}})();
 				if (hasEvents && hasTriggerEvent){
-					var trigger_events = events[settings.triggered_by];
+					var trigger_events = events[properties.triggered_by];
 					var event_memory = [];
 					for (var event in trigger_events){
 						rememberEventHandlers(element, event_memory);
@@ -62,7 +63,7 @@ var ConfirmIt = (function(){
 					for (var event in events){
 						for (var i=0, count=events[event].length; i<count; i++){
 							var event_object = events[event][i];
-							if (event_object.type == settings.triggered_by){
+							if (event_object.type == properties.triggered_by){
 								event_memory.push({
 									type: event_object.type,
 									handler: event_object.handler
@@ -75,7 +76,7 @@ var ConfirmIt = (function(){
 				
 				//	detaches trigger events from the element
 				function detachEventHandlers(element){
-					element.unbind(settings.triggered_by);
+					element.unbind(properties.triggered_by);
 				};
 				
 				//	re-attaches trigger events to the element
@@ -91,12 +92,12 @@ var ConfirmIt = (function(){
 				//	Extracts the confirmation message from the element 
 				//	HTML5 data attribute is preferred...
 				//	then the class attribute...
-				//	finally, fall back on the default message in settings
+				//	finally, fall back on the default message in properties
 				function getConfirmMessage(element){
 					var confirm_message, classname = element.attr('class');
 					confirm_message = element.attr('data-confirmit-message');
 					if (!confirm_message) try {confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]} catch(ex){}; // good candidate for a regexp
-					if (!confirm_message) confirm_message = settings.message;
+					if (!confirm_message) confirm_message = properties.message;
 					return confirm_message;
 				};
 				
@@ -109,7 +110,7 @@ var ConfirmIt = (function(){
 							event.cancelBubble = true;  
 						} else { 
 							//	else pop up the confirm message
-							return settings.message;  
+							return properties.message;  
 						}
 					};
 					window.onbeforeunload = confirmIfChanged;
@@ -118,7 +119,7 @@ var ConfirmIt = (function(){
 				//	binds the confirm handler to the specified trigger event
 				function bindConfirmHandler(element){
 					element.data('data-confirmit-ready', true);
-					element.bind(settings.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
+					element.bind(properties.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
 				};
 				
 				//	Display a confirm dialog
@@ -158,6 +159,7 @@ var ConfirmIt = (function(){
 			element.removeData('data-confirmit-deferred-callbacks');
 		}
 		element.removeData('data-confirmit-ready');
+		console.log(ConfirmIt.instances.properties);
 	};
 	
 	return { 
