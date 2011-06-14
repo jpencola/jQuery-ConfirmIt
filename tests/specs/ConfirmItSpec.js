@@ -17,7 +17,43 @@ describe('ConfirmIt', function() {
 			testbed.empty();
 			ConfirmIt.instances = [];
 			delete test_element;
-		})
+		});
+		
+		it('Should use the default triggered_by', function() {
+			var c = ConfirmIt.create.call(test_element);
+			expect(c.properties.triggered_by).toEqual(c.defaults.triggered_by);
+		});
+		
+		it('Should override the default trigger with "mouseup"', function() {
+			var c = ConfirmIt.create.call(test_element, {
+				"triggered_by":"mouseup"
+			});
+			expect(c.properties.triggered_by).toEqual("mouseup");
+		});
+		
+		it('Should use the default message', function() {
+			var c = ConfirmIt.create.call(test_element);
+			expect(c.properties.message).toEqual(c.defaults.message);
+		});
+		
+		it('Should override the default message with "oh noes!"', function() {
+			var c = ConfirmIt.create.call(test_element, {
+				"message":"oh noes!"
+			});
+			expect(c.properties.message).toEqual("oh noes!");
+		});
+		
+		it('Should use the default live', function() {
+			var c = ConfirmIt.create.call(test_element);
+			expect(c.properties.live).toEqual(c.defaults.live);
+		});
+		
+		it('Should override the default live with true', function() {
+			var c = ConfirmIt.create.call(test_element, {
+				"live":true
+			});
+			expect(c.properties.live).toBeTruthy();
+		});
 		
 		it('Should have "data-confirmit-ready" data attribute set to true.', function() {
 			test_element.confirmIt();
@@ -44,7 +80,6 @@ describe('ConfirmIt', function() {
 		//	setup
 		beforeEach(function(){
 			testbed = $("#test2");
-			testbed.empty();
 			testbed.append("<div id='destroy-test'>Test</div>");
 			test_element = $("#destroy-test");
 			test_element.click(function(){alert("clicked me!")});
@@ -56,7 +91,7 @@ describe('ConfirmIt', function() {
 			testbed.empty();
 			ConfirmIt.instances = [];
 			delete test_element;
-		})
+		});
 		
 		it('Should not have "data-confirmit-ready" data attribute.', function() {
 			test_element.confirmIt();
