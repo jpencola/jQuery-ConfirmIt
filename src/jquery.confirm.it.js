@@ -23,10 +23,10 @@ var ConfirmIt = (function(){
 				if (properties.live){
 					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
 				}
-				
+
 				//	if the trigger is "onbeforeunload" then we assume that the implementor wants 
 				//	to confirm a form that may contain client-side changes.
-				if (properties.triggered_by === 'unload'){		
+				if (properties.triggered_by === 'unload'){	
 					bindFormConfirmHandler(element);
 					
 					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){

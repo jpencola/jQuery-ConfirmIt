@@ -71,6 +71,13 @@ describe('ConfirmIt', function() {
 			var event = events['DOMNodeInserted'];
 			expect(event).toBeDefined();
 		});
+		
+		it('Should not allow bogus settings to update properties', function() {
+			var c = ConfirmIt.create.call(test_element, {
+				"foo":"bar"
+			});
+			expect(c).not.toBeDefined();
+		});
 	});
 	
 	describe('Destroy Suite', function() {
