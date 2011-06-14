@@ -1,8 +1,11 @@
 var ConfirmIt = (function(){
 	var instances = [];
 	var create = function(options){
+		var element = $(this);
 		var _instance = (function(){
-			var element = $(this);
+			//var is_already_initialized = !!(element.data('data-confirmit-ready')); 
+			//if (is_already_initialized) return;
+			
 			var defaults  = {
 				triggered_by: "click",
 				message: "Are you sure?",
@@ -11,63 +14,16 @@ var ConfirmIt = (function(){
 			var settings = $.extend({}, settings, defaults);
 			
 			function init(){
-				//	apply any overrides to the defaults
 				$.extend(settings, options);
-				console.log(defaults, settings)
-			}
-			
-			function destroy(){
-			}
-			
-			init();
-			
-			return {
-				defaults: defaults,
-				options: options,
-				init: init,
-				destroy: destroy
-			}
-		})();
-		instances.push(_instance);
-		return _instance;	
-	};
-	return { 
-		instances: instances,
-		create: create 
-	}
-})();
-			
-(function($){
-	var methods = {
-		init: function(options){
-			//	for each matching element that needs a confirmation step...
-			//	iterate over all events that it has currently bound
-			//	find the events that match the triggered_by name
-			//	store them for retrieval later
-			//	un-bind all of them
-			//	bind the confirm event so it is the first one in the bubbling phase
-			//	re-bind all the other events
-			return this.each(function(){
-				var element = $(this);
-				var is_already_initialized = !!(element.data('data-confirmit-ready')); 
-				if (is_already_initialized) return;
-				
-				var defaults = {
-					triggered_by: "click",
-					message: "Are you sure?",
-					live: false
-				};
-				//	apply any overrides to the defaults
-				if (options) $.extend(defaults, options);
 				
 				//	listen for future (live) elements added to the DOM 
-				if (defaults.live){
+				if (settings.live){
 					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
 				}
 				
-				//	if the trigger is "beforeunload" then we assume that the user is 
-				//	trying to confirm a form that may contain un-submitted changes
-				if (defaults.triggered_by === 'unload'){		
+				//	if the trigger is "onbeforeunload" then we assume that the implementor wants 
+				//	to confirm a form that may contain client-side changes.
+				if (settings.triggered_by === 'unload'){		
 					bindFormConfirmHandler(element);
 					
 					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
@@ -87,9 +43,9 @@ var ConfirmIt = (function(){
 				
 				var events = element.data('events');
 				var hasEvents = !!events;
-				var hasTriggerEvent = (function(){try{return !!events[defaults.triggered_by]}catch(ex){return false}})();
+				var hasTriggerEvent = (function(){try{return !!events[settings.triggered_by]}catch(ex){return false}})();
 				if (hasEvents && hasTriggerEvent){
-					var trigger_events = events[defaults.triggered_by];
+					var trigger_events = events[settings.triggered_by];
 					var event_memory = [];
 					for (var event in trigger_events){
 						rememberEventHandlers(element, event_memory);
@@ -101,12 +57,12 @@ var ConfirmIt = (function(){
 					bindConfirmHandler(element);
 				}
 				
-				//	stashes existing trigger events for re-use later
+				//	stash existing trigger events for re-use later
 				function rememberEventHandlers(element, event_memory){
 					for (var event in events){
 						for (var i=0, count=events[event].length; i<count; i++){
 							var event_object = events[event][i];
-							if (event_object.type == defaults.triggered_by){
+							if (event_object.type == settings.triggered_by){
 								event_memory.push({
 									type: event_object.type,
 									handler: event_object.handler
@@ -117,12 +73,12 @@ var ConfirmIt = (function(){
 					element.data('data-confirmit-deferred-callbacks', event_memory);
 				};
 				
-				//	un-binds trigger events from the element
+				//	detaches trigger events from the element
 				function detachEventHandlers(element){
-					element.unbind(defaults.triggered_by);
+					element.unbind(settings.triggered_by);
 				};
 				
-				//	re-binds pre-existing trigger events to the element
+				//	re-attaches trigger events to the element
 				function reattachEventHandlers(element){
 					var events = element.data('data-confirmit-deferred-callbacks');
 					for (var event in events){
@@ -135,12 +91,12 @@ var ConfirmIt = (function(){
 				//	Extracts the confirmation message from the element 
 				//	HTML5 data attribute is preferred...
 				//	then the class attribute...
-				//	finally, fall back on the default message in defaults
+				//	finally, fall back on the default message in settings
 				function getConfirmMessage(element){
 					var confirm_message, classname = element.attr('class');
 					confirm_message = element.attr('data-confirmit-message');
 					if (!confirm_message) try {confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]} catch(ex){}; // good candidate for a regexp
-					if (!confirm_message) confirm_message = defaults.message;
+					if (!confirm_message) confirm_message = settings.message;
 					return confirm_message;
 				};
 				
@@ -153,7 +109,7 @@ var ConfirmIt = (function(){
 							event.cancelBubble = true;  
 						} else { 
 							//	else pop up the confirm message
-							return defaults.message;  
+							return settings.message;  
 						}
 					};
 					window.onbeforeunload = confirmIfChanged;
@@ -162,7 +118,7 @@ var ConfirmIt = (function(){
 				//	binds the confirm handler to the specified trigger event
 				function bindConfirmHandler(element){
 					element.data('data-confirmit-ready', true);
-					element.bind(defaults.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
+					element.bind(settings.triggered_by + '.confirmit', (function(e){showConfirm(e, element, getConfirmMessage(element))}));
 				};
 				
 				//	Display a confirm dialog
@@ -176,20 +132,51 @@ var ConfirmIt = (function(){
 						if (is_anchor_element) event.preventDefault();
 					}
 				};
+			}
+			
+			init();
+			
+			return {
+				defaults: defaults,
+				options: options,
+				init: init,
+				destroy: destroy
+			}
+		})();
+		instances.push(_instance);
+		return _instance;	
+	};
+	
+	var destroy = function(){
+		var element = $(this);
+		if (element.data('data-confirmit-triggered-by-unload')){
+			element.removeData('data-confirmit-triggered-by-unload');
+			element.removeData('data-confirmit-altered');
+			window.onbeforeunload = null;
+		} else {
+			element.unbind('.confirmit');
+			element.removeData('data-confirmit-deferred-callbacks');
+		}
+		element.removeData('data-confirmit-ready');
+	};
+	
+	return { 
+		instances: instances,
+		create: create,
+		destroy: destroy
+	}
+})();
+			
+(function($){
+	var methods = {
+		init: function(options){
+			return this.each(function(){
+				ConfirmIt.create.call(this, options);
 			});
 		},
 		destroy: function(){
 			return this.each(function(){
-				var element = $(this);
-				if (element.data('data-confirmit-triggered-by-unload')){
-					element.removeData('data-confirmit-triggered-by-unload');
-					element.removeData('data-confirmit-altered');
-					window.onbeforeunload = null;
-				} else {
-					element.unbind('.confirmit');
-					element.removeData('data-confirmit-deferred-callbacks');
-				}
-				element.removeData('data-confirmit-ready');
+				ConfirmIt.destroy.call(this);
 			});
 		}
 	};
