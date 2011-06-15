@@ -6,9 +6,8 @@ BUGS:
 
 TASKS:
 
-	- (testing) cross-browser testing. Along with this, lets decide on our "A-grade" browsers.
-	- (maintenance) add a build script for auto-generating the compressed/optimized JS file.
 
 FUTURE ENHANCEMENTS:
 	
+        - (maintenance) add a build script for auto-generating the compressed/optimized JS file.
 	- Think about rules-style syntax support.
