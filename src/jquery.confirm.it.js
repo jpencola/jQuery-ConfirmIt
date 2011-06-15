@@ -29,13 +29,13 @@ var ConfirmIt = (function(){
 				if (properties.triggered_by === 'unload'){	
 					bindFormConfirmHandler(element);
 					
-					element.find("textarea, select, :text, checkbox,:radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").change(function(){
+					element.find("textarea, select, :text, :checkbox, :radio, :password,:input[type='textarea'], :input[type='password'], :input[type='radio'], :input[type='checkbox'], :input[type='file']").bind('change.confirmit',function(){
 						element.data('data-confirmit-altered',true);
 					});
-					element.find("textarea, :text").keydown(function(){
+					element.find("textarea, :text").bind('keydown.confirmit',function(){
 						element.data('data-confirmit-altered',true);
 					});
-					element.find(":submit").click(function(){
+					element.find(":submit").bind('click.confirmit',function(){
 						element.data('data-confirmit-altered',false);
 					});
 					
@@ -158,6 +158,9 @@ var ConfirmIt = (function(){
 			element.removeData('data-confirmit-triggered-by-unload');
 			element.removeData('data-confirmit-altered');
 			window.onbeforeunload = null;
+			
+			element.find("textarea, select, :text, :radio, :password, :input, :submit").unbind('.confirmit');			
+			
 		} else {
 			element.unbind('.confirmit');
 			element.removeData('data-confirmit-deferred-callbacks');
