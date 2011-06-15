@@ -48,7 +48,10 @@
 				
 				var events = element.data('events');
 				var hasEvents = !!events;
-				var hasTriggerEvent = (function(){try{return !!events[defaults.triggered_by]}catch(ex){return false}})();
+				var hasTriggerEvent = (function(){
+					try{return !!events[defaults.triggered_by]}
+					catch(ex){return false}})();
+				
 				if (hasEvents && hasTriggerEvent){
 					var trigger_events = events[defaults.triggered_by];
 					var event_memory = [];
@@ -100,9 +103,11 @@
 				function getConfirmMessage(element){
 					var confirm_message, classname = element.attr('class');
 					confirm_message = element.attr('data-confirmit-message');
-					if (!confirm_message) try {confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]} catch(ex){}; // good candidate for a regexp
+					if (!confirm_message) 
+						try {confirm_message = classname.substring(classname.indexOf("{")+1, classname.lastIndexOf("}")).split(":")[1]} 
+						catch(ex){}; // good candidate for a regexp
 					if (!confirm_message) confirm_message = defaults.message;
-					return confirm_message;
+						return confirm_message;
 				};
 				
 				//	binds the confirm leave handler on the window object
