@@ -1,3 +1,36 @@
+/*
+ * ConfirmIt - A JQuery Plugin for adding confirm prompts
+ *
+ * Version 1.0
+ * @built on  jQuery v1.6
+ * 
+ * Copyright (c) 2011 John Pencola / Steve Perrie under open source license (meaning you can use it freely!)
+ */
+/*
+ * 
+ * @basic usages:
+ * 
+ *	$(":submit").confirmIt('Now, wait a minute!');
+ * 	adds a confirm prompt to a submit input
+ * 
+ *	$("button").confirmIt();
+ * 	<button class="confirmit {message: Are you positive???}">Click Me</button>
+ * 	adds a confirm prompt to a submit input and uses a css class as the message
+ * 
+ *	$("button").confirmIt();
+ * 	<button data-confirmit-message="Are you positive???}">Click Me</button>
+ * 	adds a confirm prompt to a submit input and uses the  HTML 5 data element as the message
+ * 
+ *	$(":submit").confirmIt({triggered_by:'mouseup', message:'Now, wait a minute!'', live:true});
+ * 	adds a confirm prompt to a submit input, triggered by the mouseup event,  applies to dynamically added content 
+ * 
+ *	$("form").confirmIt({triggered_by:'unload', message:'leave page?'});
+ * 	adds a leave page warning when input changes within the form
+ * 
+ *  *
+ * See More Examples and docs at: https://github.com/jpencola/jQuery-ConfirmIt/wiki
+*/
+
 var ConfirmIt = (function(){
 	var instances = [];
 	var create = function(options){
