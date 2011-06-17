@@ -1,5 +1,11 @@
-# This is *ConfirmIt*, a simple jQuery plugin! #
+# This is *ConfirmIt*, a simple jQuery plugin for adding a confirmation prompt before actions. #
 -------
+##Getting Started##
+1. Clone this repository
+2. Open the "showcase.html" file within the "demos" directory in your browser.
+3. Observe the demos in the showcase to learn ConfirmIt's API.
+4. Include it in your project and get easy confirmation prompts.
+5. Send us suggestions/compliments/flames so we can make it better!
 
 ##Browser Support##
 (Tested and verified on the following platforms and browsers)

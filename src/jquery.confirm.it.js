@@ -157,10 +157,8 @@ var ConfirmIt = (function(){
 		if (element.data('data-confirmit-triggered-by-unload')){
 			element.removeData('data-confirmit-triggered-by-unload');
 			element.removeData('data-confirmit-altered');
-			window.onbeforeunload = null;
-			
 			element.find("textarea, select, :text, :radio, :password, :input, :submit").unbind('.confirmit');			
-			
+			window.onbeforeunload = null;
 		} else {
 			element.unbind('.confirmit');
 			element.removeData('data-confirmit-deferred-callbacks');
