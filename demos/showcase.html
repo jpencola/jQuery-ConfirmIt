@@ -192,7 +192,7 @@
 		<div class="example">
 			<p class="question">What about elements that are added in the future? ie: Ajax injected elements. Can confirmations be applied to those as well?</p>
 			<p class="answer">
-				Absolutely. You just need to add an additional option to the confirmit plugin's arguments of "live:true".
+				Absolutely. Just instantiate a ConfirmIt instance as you would normally, within the injected code.
 			</p>
 			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
 			<div id="spawn-container"></div>
@@ -202,8 +202,7 @@
 					spawn.className = "offspring confirmit {message: Really?}";
 					spawn.innerHTML = 'clicky thing';
 					$(spawn).confirmIt({
-						triggered_by: 'click',
-						live: true
+						triggered_by: 'click'
 					});
 					$('#spawn-container')[0].appendChild(spawn);
 					$(spawn).click(function(){alert("Hi! Says the spawn.")});

@@ -43,18 +43,6 @@ describe('ConfirmIt', function() {
 			expect(c.properties.message).toEqual("oh noes!");
 		});
 		
-		it('Should use the default live', function() {
-			var c = ConfirmIt.create.call(test_element);
-			expect(c.properties.live).toEqual(c.defaults.live);
-		});
-		
-		it('Should override the default live with true', function() {
-			var c = ConfirmIt.create.call(test_element, {
-				"live":true
-			});
-			expect(c.properties.live).toBeTruthy();
-		});
-		
 		it('Should have "data-confirmit-ready" data attribute set to true.', function() {
 			test_element.confirmIt();
 			expect(test_element).toHaveData("data-confirmit-ready", true);
@@ -65,19 +53,6 @@ describe('ConfirmIt', function() {
 			expect(test_element).toHaveData("data-confirmit-index", 0);
 		});
 		
-		it('Should have the "DOMNodeInserted" Confirmit event bound when "live" is set.', function() {
-			test_element.confirmIt({'live':true});
-			var events = $('body').data('events');
-			var event = events['DOMNodeInserted'];
-			expect(event).toBeDefined();
-		});
-		
-		it('Should not allow bogus settings to update properties', function() {
-			var c = ConfirmIt.create.call(test_element, {
-				"foo":"bar"
-			});
-			expect(c).not.toBeDefined();
-		});
 	});
 	
 	describe('Destroy Suite', function() {
@@ -117,14 +92,6 @@ describe('ConfirmIt', function() {
 			test_element.confirmIt('destroy');
 			var events = test_element.data('events');
 			var event = events['click.confirmit'];
-			expect(event).not.toBeDefined();
-		});
-		
-		it('Should not have the "DOMNodeInserted" Confirmit event bound when "live" is set.', function() {
-			test_element.confirmIt({'live':true});
-			test_element.confirmIt('destroy');
-			var events = $('body').data('events');
-			var event = events['DOMNodeInserted.confirmit'];
 			expect(event).not.toBeDefined();
 		});
 	});

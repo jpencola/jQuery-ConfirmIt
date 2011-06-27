@@ -1,7 +1,7 @@
 /*
  * ConfirmIt - A JQuery Plugin for adding confirm prompts
  *
- * @version: 1.0
+ * @version: 1.0.1
  * @requires: jQuery v1.6
  * @copyright: © 2011 John Pencola / Steve Perrie under the GNU GPL license (meaning you can use it freely!)
  * @documentation: https://github.com/jpencola/jQuery-ConfirmIt/
@@ -18,7 +18,6 @@
  * 	<button data-confirmit-message="Are you positive???}">Click Me</button>
  * 	adds a confirm prompt to a submit input and uses the  HTML 5 data element as the message
  * 
- *	$(":submit").confirmIt({triggered_by:'mouseup', message:'Now, wait a minute!'', live:true});
  * 	adds a confirm prompt to a submit input, triggered by the mouseup event,  applies to dynamically added content 
  * 
  *	$("form").confirmIt({triggered_by:'unload', message:'leave page?'});
@@ -36,8 +35,7 @@ var ConfirmIt = (function(){
 			
 			var defaults  = {
 				triggered_by: "click",
-				message: "Are you sure?",
-				live: false
+				message: "Are you sure?"
 			};
 			
 			var properties = $.extend({}, properties, defaults);
@@ -47,11 +45,6 @@ var ConfirmIt = (function(){
 				//	store an index of the new ConfirmIt object for lookups later
 				element.data('data-confirmit-index', ConfirmIt.instances.length);
 				
-				//	listen for future (live) elements added to the DOM 
-				if (properties.live){
-					$('body').bind('DOMNodeInserted.confirmit', function(event){$(event.target).confirmIt('init', options)});
-				}
-
 				//	if the trigger is "onbeforeunload" then we assume that the implementor wants 
 				//	to confirm a form that may contain client-side changes.
 				if (properties.triggered_by === 'unload'){	
