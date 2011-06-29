@@ -1,0 +1,13 @@
+TODO v.1.0
+----------
+
+BUGS:
+
+
+TASKS:
+
+
+FUTURE ENHANCEMENTS:
+	
+        - (maintenance) add a build script for auto-generating the compressed/optimized JS file.
+	- Think about rules-style syntax support.

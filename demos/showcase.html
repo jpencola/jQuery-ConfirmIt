@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>jQuery-ConfirmIt: Example Showcase</title>
+		<style type="text/css">
+			body {margin:35px;}
+			pre {
+				white-space:normal;
+				color: #C1C1C1;
+				background-color: #323232;
+				line-height: 28px;
+				text-indent: 12px;
+			}
+			div.example {
+				margin:25px 0; 
+				border-bottom: solid 1px #c1c1c1;
+				background-color: #ECF8F8;
+				padding: 15px;
+			}
+			.version { color: #444; }
+			.question { color: #521988; font-size: 20px; }
+			.question:before {
+				font-weight: bold;
+				text-decoration: underline;
+				content: "Q: ";
+			}
+			.answer { color: #38882B;}
+			.answer:before {
+				font-weight: bold;
+				text-decoration: underline;
+				content: "A: ";
+			}
+			span.html {
+				display: block;
+				margin: 12px;
+				text-indent: 12px;
+				font-family: "Courier New", Courier, monospace;
+			}
+			button {display: block; cursor: pointer;}
+			div.offspring{display: none;}
+			div#spawn-container div.offspring{
+				display: inline; 
+				background-color: #E70047;
+				color: #fff;
+				margin: 8px;
+				cursor: pointer;
+			}
+			
+			div.formBlock
+			{
+				float:left;
+				margin:3px;
+				width:200px;
+			}
+		</style>
+		<script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+		<script src="../src/jquery.confirm.it.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			$(function() {
+				$("#example-1").click(function(){
+					alert('Example 1 clicked!');
+				});
+				
+				$("#example-2a").click(function(){
+					alert('Example 2a clicked!');
+				});
+				$("#example-2b").click(function(){
+					alert('Example 2b clicked!');
+				});
+				$("#example-2c").click(function(){
+					alert('Example 2c clicked!');
+				});
+				
+				$("#example-3").click(function(){
+					alert('Example 3 clicked!');
+				});
+				
+				$('#example-add').mouseup(function(){
+					var current_sum = $('#sum-input').attr('value');
+					$('#sum-input').attr('value', +current_sum+10);
+				});
+				
+				$('#example-eventsequence').mouseup(function(e){
+					alert('Firing event sequence 1');
+				});
+				$('#example-eventsequence').mouseup(function(){
+					alert('Firing event sequence 2');
+				});
+				$('#example-eventsequence').mouseup(function(){
+					alert('Firing event sequence 3');
+				});
+				
+				$("#late-undo-binder").one("click", function(){
+					$("#example-late-undo").click(function(){
+						alert("Your changes have been un-done");
+					});
+				});
+				
+				$("div.example pre").each(function(){
+					eval(this.innerHTML);
+				});
+				
+				$("#myForm").confirmIt({triggered_by:'unload', message:'This is a ConfirmIt leave page warning.'});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>jQuery ConfirmIt Showcase</h1>
+		<span class="version">version 1.0</span>
+		<div class="example">
+			<p class="question">What's the easiest way to get a confirmation?</p>
+			<p class="answer">
+				The simplist way is to select your element, then call confirmit.
+				This will attach to the "click" event by default and display a default confirmation message of "Are you sure?". 
+			</p>
+			<button id="example-1" title="Simple Message">Example 1</button>
+			<pre>
+				$("#example-1").confirmIt();
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">What if I want to customize the confirmation message, but still keep the implementation as simple as possible?</p>
+			<p class="answer">
+				If you want to stick with JavaScript, you'd use the same approach as above, this time passing in your custom confirmation message as a single argument to the confirmit plugin. 
+			</p>
+			<button id="example-2a" title="Simple Message">Example 2a</button>
+			<pre>
+				$("#example-2a").confirmIt('Now, wait a minute!');
+			</pre>
+			<p>
+				You can also define a custom message in 1 of 2 ways on the element itself. Either in the "class" attribute in the format: 
+				<span class="html">class="confirmit {message: Are you positive???}"</span>
+			</p>
+			<button id="example-2b" title="Simple Message" class="confirmit {message: Are you positive???}">Example 2b</button>
+			<pre>
+				$("#example-2b").confirmIt();
+			</pre>
+			<p>
+				Or, using the HTML5 "data" attribute, in the format:
+				<span class="html">data-confirmit-message="click OK to continue..."</span>
+			</p>
+			<button id="example-2c" title="Simple Message" data-confirmit-message="click OK to continue...">Example 2c</button>
+			<pre>
+				$("#example-2c").confirmIt();
+			</pre>
+			
+		</div>
+		<div class="example">
+			<p class="question">How can I remove a confirmation once it's been added?</p>
+			<p class="answer">
+				Easy! You just pass the 'destroy' argument to the confirmit plugin on the element that you want the confirmation removed from.
+			</p>
+			<button id="example-3" title="Simple Message">Example 3</button>
+			<pre>
+				$("#example-3").confirmIt();
+			</pre>
+			<a id="unconfirm-example-3" title="Remove the confirmation" href="#null">Remove Confirmation</a>
+			<pre>
+				$('#unconfirm-example-3').click(function(){
+					$("#example-3").confirmIt('destroy');
+				});
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">How can I specify different events to trigger a confirmation?</p>
+			<p class="answer">
+				Just pass the optional "triggered_by" setting to the confirmit plugin and use event names that jQuery understands. The default trigger is 'click'.
+			</p>
+			<button id="example-add" title="Add Things" class="confirmit {message: Are you sure you want to add 10 more to this?}">Example: Custom Trigger</button>
+			<input id="sum-input" value="0" readonly="readonly">
+			<pre>
+				$("#example-add").confirmIt({
+					triggered_by: 'mouseup'
+				});
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">Does confirmit automatically defer all events that are bound to an element?</p>
+			<p class="answer">
+				It sure does. When a confirmation is triggered, any other bound events which would fire are deferred until the confirmation is approved.
+			</p>
+			<button id="example-eventsequence" title="Sequence Awesomeness">Example: Multiple Events</button>
+			<pre>
+				$("#example-eventsequence").confirmIt({
+					triggered_by: 'mouseup',
+					message: "Continue processing?"
+				});
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">What about elements that are added in the future? ie: Ajax injected elements. Can confirmations be applied to those as well?</p>
+			<p class="answer">
+				Absolutely. Just instantiate a ConfirmIt instance as you would normally, within the injected code.
+			</p>
+			<button id="spawner" title="Spawns more things..." class="spawner">Spawn</button>
+			<div id="spawn-container"></div>
+			<pre>
+				$('#spawner').click(function(e){
+					var spawn = document.createElement('div');
+					spawn.className = "offspring confirmit {message: Really?}";
+					spawn.innerHTML = 'clicky thing';
+					$(spawn).confirmIt({
+						triggered_by: 'click'
+					});
+					$('#spawn-container')[0].appendChild(spawn);
+					$(spawn).click(function(){alert("Hi! Says the spawn.")});
+				});
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">Does it matter what order I add a confirmation to an element vs. the order I bind events to that same element?</p>
+			<p class="answer">
+				Nope. "Late-binding" is supported.
+			</p>
+			<button id="example-late-undo" title="Undo Things">Undo</button>
+			<button id="late-undo-binder" title="Bind event to Undo">Example: Bind an event to 'undo' button</button>
+			<pre>
+				$("#example-late-undo").confirmIt({
+					message: "Are you sure you want to undo your changes?"
+				});
+			</pre>
+		</div>
+		<div class="example">
+			<p class="question">How can I prevent anchor elements from linking off to a URL until a confirmation is approved?</p>
+			<p class="answer">
+				Same as usual. However, ConfirmIt is best used by working with triggers such as "click" or "mousedown" in this case. 
+				Internally, the plugin assumes that if you are confirming an element that links-off to a URL, then you are using an 
+				Anchor element to do so.
+			</p>
+			<a id="example-outboundlink" title="Visit Duck-Duck-Go" href="http://ddg.gg">Link out to Duck-Duck-Go</a>
+			<pre>
+				$("#example-outboundlink").confirmIt("Are you sure you want to leave this site?");
+			</pre>
+		</div>
+		
+		<h2>jQuery ConfirmIt Leave Page Warning</h2>
+		<div class="example">
+			<p class="question">How can ConfirmIt warn users if they attempt to navigate away from a page where they have entered form data?</p>
+			<p class="answer">
+				When you specify triggered_by:'unload', confirmit will watch all inputs within the specified form for a change. When a change is detected, a confirm prompt will appear if the user attempts to leave the page either by clicking the back button, refresh, clicking a link on the page, or closing the window.  The confirm will not appear if the user submits the form. 
+			</p>
+			
+			<form id="myForm" >
+		<fieldset>
+		
+			<legend>sample form with leave page warning</legend>
+
+			<div class="formBlock">
+				text input <br/>
+				<input type="text" value="" name="firstname" />
+				<br /><br />
+				text area<br/>
+				<textarea name="myTextArea"></textarea>
+			</div>
+
+			<div class="formBlock">
+				single select 
+				<br/>
+				<select name="singleselect">
+				  <option value="1" selected>Item 1</option>
+				  <option value="2">Item 2</option>
+				  <option value="3">Item 3</option>
+				  <option value="4">Item 4</option>
+				</select>
+
+			</div>
+
+			<div class="formBlock">
+				multi select 
+				<br/>
+				<select multiple name="multiselect">
+				  <option value="1">Item 1</option>
+				  <option value="2">Item 2</option>
+				  <option value="3" selected>Item 3</option>
+				  <option value="4" selected>Item 4</option>
+				</select>
+			</div>
+
+
+			<div class="formBlock">
+			
+				checkedboxes:
+				<br/>
+				<input type="checkbox" name="uncheckedbox" value="true" />&nbsp;
+				<input type="checkbox" name="checkedbox" value="true" checked="checked" />
+
+				<br /><br />
+				radio <br />
+				<input type="radio" name="gender" value="male" checked="checked" /> Male<br />
+				<input type="radio" name="gender" value="female" /> Female
+
+			</div>
+
+			<br style="clear:both" /><br />
+			<input type="submit" value="submit form" />
+
+
+			<br />
+		</fieldset>
+	</form>
+
+			
+			<pre>
+				$("#myForm").confirmIt({triggered_by:'unload', message:'This is a ConfirmIt leave page warning.'});
+			</pre>
+			<a id="unconfirm-form" title="Remove the confirmation" href="#null">Remove Confirmation</a>
+			<pre>
+				$('#unconfirm-form').click(function(){
+					$("#myForm").confirmIt('destroy');
+				});
+			</pre>
+		</div>
+	</body>
+</html>
