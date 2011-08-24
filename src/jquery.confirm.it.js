@@ -128,14 +128,8 @@ var ConfirmIt = (function(){
 				//	binds the confirm leave handler on the window object
 				function bindFormConfirmHandler(element){
 					var confirmIfChanged = function(event){  
-						if (!event) {
-						        
-							// IE doesn't get 
-							// the event passed in
-							// so we have to use window.event
-							// see http://www.quirksmode.org/js/events_access.html
-							var event = window.event;
-						}
+						//      IE event support
+						event = event || window.event;
 						//	if the form has been not been altered
 						if (!element.data('data-confirmit-altered')){  
 							//	cancel the event and leave the page
