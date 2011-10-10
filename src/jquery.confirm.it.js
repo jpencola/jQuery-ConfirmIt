@@ -128,6 +128,13 @@ var ConfirmIt = (function(){
 				//	binds the confirm leave handler on the window object
 				function bindFormConfirmHandler(element){
 					var confirmIfChanged = function(event){  
+						if (!event) {
+							// IE doesn't get
+							// the event passed in
+							// so we have to use window.event
+							// see http://www.quirksmode.org/js/events_access.html
+							var event = window.event;
+						}
 						//      IE event support
 						event = event || window.event;
 						//	if the form has been not been altered
@@ -155,8 +162,10 @@ var ConfirmIt = (function(){
 					var confirmed = window.confirm(message);
 					if (!confirmed){
 						event.stopImmediatePropagation();
-						var is_anchor_element = !!(event.target.nodeName === 'A');
-						if (is_anchor_element) event.preventDefault();
+						// JQ 1.6.2 requires event.preventDefault() to stop form submissions
+						event.preventDefault();
+						//var is_anchor_element = !!(event.target.nodeName === 'A');
+						//if (is_anchor_element) event.preventDefault();
 					}
 				};
 			}
