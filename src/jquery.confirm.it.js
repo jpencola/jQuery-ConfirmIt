@@ -3,7 +3,7 @@
  *
  * @version: 1.0.1
  * @requires: jQuery v1.6
- * @copyright: © 2011 John Pencola / Steve Perrie under the GNU GPL license (meaning you can use it freely!)
+ * @copyright: ï¿½ 2011 John Pencola / Steve Perrie under the GNU GPL license (meaning you can use it freely!)
  * @documentation: https://github.com/jpencola/jQuery-ConfirmIt/
  * @API:
  * 
@@ -128,6 +128,8 @@ var ConfirmIt = (function(){
 				//	binds the confirm leave handler on the window object
 				function bindFormConfirmHandler(element){
 					var confirmIfChanged = function(event){  
+						//      IE event support
+						event = event || window.event;
 						//	if the form has been not been altered
 						if (!element.data('data-confirmit-altered')){  
 							//	cancel the event and leave the page
