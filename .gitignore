@@ -1,4 +1,9 @@
+# OS Specific #
+###############
+.DS_Store
+
 # Project Specific #
 ###################
 .project
+.metadata
 /activity.webm
